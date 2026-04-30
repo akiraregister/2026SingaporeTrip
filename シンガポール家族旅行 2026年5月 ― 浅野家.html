@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>シンガポール家族旅行 2026年5月 ― 浅野家</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+<style>
+:root {
+  --cream:#FAF7F2;--warm-white:#FFFDF9;--gold:#C9973A;--gold-light:#F5E6C8;
+  --teal:#2A7B6F;--teal-light:#E0F0EE;--coral:#D4614A;--coral-light:#FAE8E4;
+  --ink:#1A1814;--ink-mid:#4A4540;--ink-light:#7A746E;--ink-faint:#B0AAA4;--border:#DDD6CC;
+  --day1:#1A5E8A;--day1-l:#E5F0F8;--day2:#2A7B6F;--day2-l:#E0F0EE;
+  --day3:#8A3A2A;--day3-l:#F8EAE6;--day4:#2A6B3A;--day4-l:#E0EEE3;--day5:#8A6A1A;--day5-l:#F8F0DC;
+  --radius:12px;--radius-sm:8px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Noto Sans JP',sans-serif;background:var(--cream);color:var(--ink);font-size:15px;line-height:1.7;min-height:100vh;}
+
+/* HERO */
+.hero{background:var(--ink);color:var(--warm-white);padding:56px 24px 44px;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 60%,rgba(42,123,111,.35) 0%,transparent 60%),radial-gradient(ellipse at 75% 30%,rgba(201,151,58,.2) 0%,transparent 55%);pointer-events:none;}
+.hero-eyebrow{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:18px;}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(28px,7vw,48px);font-weight:600;line-height:1.15;margin-bottom:8px;position:relative;}
+.hero-sub{font-size:14px;color:rgba(255,255,255,.6);margin-bottom:28px;letter-spacing:.04em;}
+.hero-pills{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;position:relative;}
+.hero-pill{background:rgba(255,255,255,.1);border:0.5px solid rgba(255,255,255,.2);border-radius:20px;padding:5px 14px;font-size:12px;color:rgba(255,255,255,.85);}
+.hero-pill.gold{background:rgba(201,151,58,.25);border-color:rgba(201,151,58,.4);color:#F5D98B;}
+
+/* LAYOUT */
+.container{max-width:720px;margin:0 auto;padding:0 20px;}
+section{margin:36px 0;}
+.section-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:14px;padding-bottom:10px;border-bottom:0.5px solid var(--border);}
+
+/* SETUP BANNER */
+.setup-banner{background:#FFF8E7;border:0.5px solid #E8C840;border-radius:var(--radius-sm);padding:13px 16px;margin-bottom:12px;font-size:12px;color:#6B4F00;display:none;line-height:1.6;}
+.setup-banner.show{display:block;}
+.setup-banner code{background:rgba(0,0,0,.08);padding:1px 5px;border-radius:3px;font-family:'DM Mono',monospace;font-size:11px;}
+
+/* SETUP GUIDE */
+.setup-guide{background:white;border:0.5px solid var(--border);border-radius:var(--radius);margin-bottom:20px;overflow:hidden;}
+.setup-guide-toggle{padding:13px 18px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-size:13px;font-weight:700;color:var(--ink);user-select:none;}
+.setup-guide-toggle:hover{background:var(--cream);}
+.setup-guide-toggle .sg-arrow{color:var(--ink-faint);transition:transform .2s;font-size:12px;}
+.setup-guide-toggle.open .sg-arrow{transform:rotate(180deg);}
+.setup-guide-body{display:none;border-top:0.5px solid var(--border);padding:20px;}
+.setup-guide-body.open{display:block;}
+.sg-phase{margin-bottom:24px;}
+.sg-phase:last-child{margin-bottom:0;}
+.sg-phase-title{font-size:12px;font-weight:700;color:white;background:var(--teal);display:inline-block;padding:3px 12px;border-radius:20px;margin-bottom:12px;}
+.sg-steps{display:flex;flex-direction:column;gap:10px;}
+.sg-step{display:flex;gap:12px;align-items:flex-start;}
+.sg-num{width:24px;height:24px;border-radius:50%;background:var(--teal-light);color:var(--teal);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+.sg-content{flex:1;}
+.sg-content strong{font-size:13px;color:var(--ink);display:block;margin-bottom:3px;}
+.sg-content p{font-size:12px;color:var(--ink-mid);line-height:1.6;}
+.sg-code{background:#F3F1EE;border:0.5px solid var(--border);border-radius:6px;padding:10px 12px;margin-top:6px;font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-mid);line-height:1.8;white-space:pre-wrap;word-break:break-all;}
+.sg-tip{background:var(--gold-light);border:0.5px solid #D4B060;border-radius:6px;padding:9px 12px;margin-top:8px;font-size:12px;color:#7A5800;line-height:1.5;}
+
+/* SYNC STATUS */
+.sync-dot{position:fixed;bottom:18px;right:18px;background:rgba(26,24,20,.85);color:white;font-size:11px;padding:6px 14px;border-radius:20px;backdrop-filter:blur(6px);z-index:500;opacity:0;transition:opacity .3s;pointer-events:none;}
+.sync-dot.show{opacity:1;}
+
+/* FLIGHTS */
+.flight-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.flight-card{background:var(--warm-white);border:0.5px solid var(--border);border-radius:var(--radius);padding:16px 18px;}
+.flight-dir{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-faint);margin-bottom:6px;}
+.flight-route{font-family:'Playfair Display',serif;font-size:20px;color:var(--ink);margin-bottom:4px;}
+.flight-info{font-size:12px;color:var(--ink-mid);line-height:1.6;}
+.flight-num{font-family:'DM Mono',monospace;font-size:11px;color:var(--gold);font-weight:500;margin-top:6px;}
+
+/* HOTEL */
+.hotel-card{background:var(--warm-white);border:0.5px solid var(--border);border-radius:var(--radius);padding:18px 20px;display:flex;gap:16px;align-items:flex-start;}
+.hotel-icon{width:44px;height:44px;background:var(--gold-light);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.hotel-name{font-size:14px;font-weight:700;color:var(--ink);}
+.hotel-detail{font-size:12px;color:var(--ink-mid);margin-top:4px;line-height:1.6;}
+.badge{display:inline-block;font-size:10px;font-weight:500;padding:2px 8px;border-radius:10px;margin-left:5px;vertical-align:middle;}
+.bg{background:var(--teal-light);color:var(--teal);}
+
+/* FILES */
+.files-list{display:flex;flex-direction:column;gap:8px;}
+.file-item{background:var(--warm-white);border:0.5px solid var(--border);border-radius:var(--radius-sm);padding:12px 16px;display:flex;align-items:center;gap:12px;}
+.file-icon{width:36px;height:36px;background:#FDECEA;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.file-info{flex:1;min-width:0;}
+.file-name{font-size:13px;font-weight:600;color:var(--ink);}
+.file-meta{font-size:11px;color:var(--ink-light);margin-top:2px;}
+.file-actions{display:flex;gap:6px;flex-shrink:0;}
+.file-btn{border:0.5px solid var(--border);background:white;border-radius:6px;padding:5px 11px;font-size:11px;font-weight:500;color:var(--ink-mid);text-decoration:none;transition:all .15s;}
+.file-btn:hover{border-color:var(--teal);color:var(--teal);}
+.file-btn.dl{background:var(--teal);color:white;border-color:var(--teal);}
+.file-btn.dl:hover{background:#1F6059;}
+
+/* WEATHER */
+.wx-cards{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:8px;}
+.wx-card{background:var(--warm-white);border:0.5px solid var(--border);border-radius:var(--radius-sm);padding:12px 8px;text-align:center;}
+.wx-day{font-size:9.5px;font-family:'DM Mono',monospace;color:var(--ink-faint);margin-bottom:6px;line-height:1.3;}
+.wx-icon{font-size:26px;margin-bottom:4px;line-height:1;}
+.wx-name{font-size:11px;color:var(--ink-mid);margin-bottom:6px;line-height:1.3;}
+.wx-temp{font-size:13px;font-weight:700;margin-bottom:7px;}
+.wx-hi{color:var(--coral);}
+.wx-sep{color:var(--ink-faint);margin:0 2px;font-weight:300;}
+.wx-lo{color:var(--day1);}
+.wx-rain-bar{height:3px;background:var(--border);border-radius:2px;margin-bottom:4px;}
+.wx-rain-fill{height:100%;border-radius:2px;transition:width .6s;}
+.wx-rain-pct{font-size:10px;font-family:'DM Mono',monospace;}
+.wx-footer{display:flex;align-items:center;justify-content:space-between;margin-top:8px;}
+.wx-updated{font-size:10px;color:var(--ink-faint);}
+.wx-refresh-btn{background:none;border:0.5px solid var(--border);border-radius:6px;padding:3px 9px;font-size:11px;color:var(--ink-light);cursor:pointer;}
+.wx-refresh-btn:hover{border-color:var(--teal);color:var(--teal);}
+.wx-loading{text-align:center;padding:24px;font-size:13px;color:var(--ink-light);}
+.wx-error{text-align:center;padding:18px;font-size:12px;color:var(--coral);background:var(--coral-light);border-radius:var(--radius-sm);}
+
+/* MAP */
+.map-wrap{border-radius:var(--radius);overflow:hidden;border:0.5px solid var(--border);}
+.map-note{background:var(--warm-white);border-top:0.5px solid var(--border);padding:10px 14px;font-size:11.5px;color:var(--ink-light);}
+.spot-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;}
+.spot-card{background:var(--warm-white);border:0.5px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px;text-decoration:none;color:inherit;display:block;transition:box-shadow .15s,border-color .15s;}
+.spot-card:hover{border-color:var(--gold);box-shadow:0 2px 12px rgba(0,0,0,.07);}
+.spot-day{font-size:10px;font-family:'DM Mono',monospace;color:var(--ink-faint);margin-bottom:4px;}
+.spot-name{font-size:13px;font-weight:500;color:var(--ink);}
+.spot-note{font-size:11px;color:var(--ink-light);margin-top:3px;line-height:1.5;}
+.spot-maps{font-size:11px;color:var(--teal);margin-top:6px;font-weight:500;}
+
+/* DAYS */
+.day-card{background:var(--warm-white);border:0.5px solid var(--border);border-radius:var(--radius);margin-bottom:12px;overflow:hidden;}
+.day-header{padding:14px 20px;display:flex;align-items:center;gap:12px;cursor:pointer;user-select:none;}
+.day-header:hover{background:#F5F1EC;}
+.day-num{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:15px;font-weight:600;flex-shrink:0;}
+.day-title{flex:1;}
+.day-title h2{font-size:14px;font-weight:700;color:var(--ink);}
+.day-title p{font-size:12px;color:var(--ink-light);margin-top:1px;}
+.day-chev{color:var(--ink-faint);font-size:12px;transition:transform .2s;flex-shrink:0;}
+.day-chev.open{transform:rotate(180deg);}
+.day-body{display:none;border-top:0.5px solid var(--border);padding:16px 20px;}
+.day-body.open{display:block;}
+.edit-btn{background:none;border:0.5px solid var(--border);border-radius:6px;padding:3px 9px;font-size:11px;color:var(--ink-light);cursor:pointer;transition:all .15s;white-space:nowrap;flex-shrink:0;}
+.edit-btn:hover{border-color:var(--gold);color:var(--gold);}
+.edit-btn.active{background:var(--gold-light);border-color:var(--gold);color:var(--gold);}
+
+/* TIMELINE */
+.tl{list-style:none;}
+.ti{display:flex;gap:12px;}
+.ti:last-child .tl-ln{display:none;}
+.tl-l{display:flex;flex-direction:column;align-items:center;width:48px;flex-shrink:0;}
+.tl-t{font-family:'DM Mono',monospace;font-size:10px;color:var(--ink-faint);white-space:nowrap;padding-top:2px;}
+.tl-d{width:8px;height:8px;border-radius:50%;margin-top:5px;flex-shrink:0;}
+.tl-ln{width:1px;background:var(--border);flex:1;margin-top:3px;min-height:24px;}
+.tc{padding-bottom:18px;flex:1;min-width:0;}
+.tc h3{font-size:13px;font-weight:700;color:var(--ink);line-height:1.4;}
+.tc p{font-size:12px;color:var(--ink-mid);margin-top:3px;line-height:1.6;}
+.ti-del{display:none;background:none;border:none;color:var(--coral);cursor:pointer;font-size:15px;padding:2px 4px;opacity:.4;flex-shrink:0;margin-top:2px;line-height:1;}
+.ti-del:hover{opacity:1;}
+.day-body.editing .ti-del{display:block;}
+.add-form{display:none;background:var(--cream);border:0.5px dashed var(--border);border-radius:var(--radius-sm);padding:14px;margin-top:10px;flex-direction:column;gap:8px;}
+.day-body.editing .add-form{display:flex;}
+.add-form label{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-faint);font-family:'DM Mono',monospace;margin-bottom:-4px;}
+.add-form input,.add-form select{border:0.5px solid var(--border);border-radius:6px;padding:7px 10px;font-size:12px;font-family:inherit;background:white;color:var(--ink);}
+.add-form input:focus,.add-form select:focus{outline:none;border-color:var(--gold);}
+.add-form .frow{display:flex;gap:8px;}
+.add-form .frow input:first-child{width:80px;flex:none;}
+.add-form .frow input:last-child{flex:1;}
+.add-form-btn{background:var(--gold);color:white;border:none;border-radius:6px;padding:8px 16px;font-size:12px;font-weight:600;cursor:pointer;align-self:flex-start;}
+.add-form-btn:hover{background:#B0832A;}
+
+/* CHECKLISTS */
+.cl-wrap{display:flex;flex-direction:column;gap:12px;}
+.cl-card{background:var(--warm-white);border:0.5px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+.cl-head{padding:10px 16px;display:flex;align-items:center;justify-content:space-between;}
+.cl-title{font-size:13px;font-weight:700;color:var(--ink);}
+.cl-count{font-size:11px;color:var(--ink-faint);font-family:'DM Mono',monospace;}
+.cl-bar{height:3px;background:var(--border);margin:0 16px 1px;}
+.cl-fill{height:100%;background:var(--teal);transition:width .3s;border-radius:2px;}
+.cl-row{display:flex;align-items:center;gap:10px;padding:8px 16px;border-bottom:0.5px solid rgba(0,0,0,.04);transition:background .1s;}
+.cl-row:hover{background:var(--cream);}
+.cl-row:last-child{border-bottom:none;}
+.cl-row input[type="checkbox"]{width:15px;height:15px;accent-color:var(--teal);cursor:pointer;flex-shrink:0;}
+.cl-row label{font-size:12.5px;color:var(--ink);flex:1;cursor:pointer;line-height:1.5;}
+.cl-row.done label{text-decoration:line-through;color:var(--ink-faint);}
+.cl-del{background:none;border:none;color:var(--ink-faint);cursor:pointer;font-size:14px;padding:0 3px;opacity:0;flex-shrink:0;}
+.cl-row:hover .cl-del{opacity:.5;}
+.cl-del:hover{opacity:1!important;color:var(--coral);}
+.cl-add{display:flex;gap:8px;padding:8px 16px;border-top:0.5px solid var(--border);background:var(--cream);}
+.cl-add input{flex:1;border:0.5px solid var(--border);border-radius:6px;padding:6px 10px;font-size:12px;font-family:inherit;background:white;color:var(--ink);}
+.cl-add input:focus{outline:none;border-color:var(--teal);}
+.cl-add button{background:var(--teal);color:white;border:none;border-radius:6px;padding:6px 13px;font-size:12px;font-weight:600;cursor:pointer;}
+.cl-add button:hover{background:#1F6059;}
+
+/* CURRENCY CONVERTER */
+.fx-card{background:var(--warm-white);border:0.5px solid var(--border);border-radius:var(--radius);padding:20px 22px;}
+.fx-input-row{display:flex;gap:10px;align-items:center;margin-bottom:14px;}
+.fx-input-wrap{position:relative;flex:1;}
+.fx-input-wrap span{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-family:'DM Mono',monospace;font-size:14px;font-weight:600;color:var(--gold);}
+.fx-input{width:100%;padding:10px 12px 10px 32px;border:0.5px solid var(--border);border-radius:var(--radius-sm);font-size:18px;font-family:'DM Mono',monospace;font-weight:500;color:var(--ink);background:var(--cream);}
+.fx-input:focus{outline:none;border-color:var(--gold);background:white;}
+.fx-results{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.fx-result{background:var(--cream);border:0.5px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;text-align:center;}
+.fx-result-label{font-size:10px;font-family:'DM Mono',monospace;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;}
+.fx-result-flag{font-size:22px;margin-bottom:4px;}
+.fx-result-amount{font-size:22px;font-weight:700;font-family:'DM Mono',monospace;color:var(--ink);line-height:1.2;}
+.fx-result-currency{font-size:11px;color:var(--ink-light);margin-top:3px;}
+.fx-rate-row{display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:10px;border-top:0.5px solid var(--border);}
+.fx-rates{font-size:11px;color:var(--ink-faint);font-family:'DM Mono',monospace;display:flex;gap:14px;}
+.fx-refresh{background:none;border:0.5px solid var(--border);border-radius:6px;padding:3px 10px;font-size:11px;color:var(--ink-light);cursor:pointer;}
+.fx-refresh:hover{border-color:var(--teal);color:var(--teal);}
+.fx-loading-msg{text-align:center;font-size:12px;color:var(--ink-faint);padding:10px;}
+
+/* SPOT LINKS (bottom) */
+.spot-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;}
+.spot-card{background:var(--warm-white);border:0.5px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px;text-decoration:none;color:inherit;display:block;transition:box-shadow .15s,border-color .15s;}
+.spot-card:hover{border-color:var(--gold);box-shadow:0 2px 12px rgba(0,0,0,.07);}
+.spot-day{font-size:10px;font-family:'DM Mono',monospace;color:var(--ink-faint);margin-bottom:4px;}
+.spot-name{font-size:13px;font-weight:500;color:var(--ink);}
+.spot-note{font-size:11px;color:var(--ink-light);margin-top:3px;line-height:1.5;}
+.spot-maps{font-size:11px;color:var(--teal);margin-top:6px;font-weight:500;}
+
+/* BENEFITS */
+.benefit-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.benefit-card{background:var(--warm-white);border:0.5px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;}
+.benefit-card h3{font-size:12.5px;font-weight:700;color:var(--ink);margin-bottom:6px;}
+.benefit-card ul{list-style:none;}
+.benefit-card li{font-size:12px;color:var(--ink-mid);line-height:1.6;padding-left:12px;position:relative;}
+.benefit-card li::before{content:'·';position:absolute;left:2px;color:var(--gold);font-weight:700;}
+
+/* NAV */
+.sticky-nav{position:sticky;top:0;background:rgba(26,24,20,.95);backdrop-filter:blur(8px);z-index:100;padding:10px 20px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;border-bottom:0.5px solid rgba(255,255,255,.08);}
+.sticky-nav::-webkit-scrollbar{display:none;}
+.nav-btn{flex-shrink:0;background:rgba(255,255,255,.07);border:0.5px solid rgba(255,255,255,.12);border-radius:20px;padding:5px 13px;font-size:11.5px;color:rgba(255,255,255,.7);text-decoration:none;font-family:'Noto Sans JP',sans-serif;transition:background .15s;white-space:nowrap;}
+.nav-btn:hover{background:rgba(201,151,58,.3);color:#F5D98B;}
+
+footer{background:var(--ink);color:rgba(255,255,255,.5);text-align:center;padding:28px 20px;font-size:12px;line-height:1.8;margin-top:40px;}
+footer span{color:var(--gold);}
+
+@media(max-width:540px){
+  .flight-grid,.benefit-grid{grid-template-columns:1fr;}
+  .spot-grid{grid-template-columns:1fr 1fr;}
+  .hero h1{font-size:26px;}
+  .hotel-card{flex-direction:column;}
+  .file-item{flex-wrap:wrap;}
+  .file-actions{margin-top:4px;}
+  .wx-cards{grid-template-columns:1fr 1fr;}
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-eyebrow">Family Travel Guide · 2026</div>
+  <h1>シンガポール<br>家族旅行</h1>
+  <div class="hero-sub">浅野亮 · 王思思 · 浅野礼惟（6歳）</div>
+  <div class="hero-pills">
+    <span class="hero-pill">📅 2026年5月3〜7日（5日間）</span>
+    <span class="hero-pill gold">🏨 JW Marriott South Beach</span>
+    <span class="hero-pill">✈ SQ827 / SQ826</span>
+    <span class="hero-pill">👨‍👩‍👧 大人2名 · 子供1名</span>
+  </div>
+</div>
+
+<nav class="sticky-nav">
+  <a class="nav-btn" href="#flights">フライト</a>
+  <a class="nav-btn" href="#hotel">ホテル</a>
+  <a class="nav-btn" href="#files">ファイル</a>
+  <a class="nav-btn" href="#weather">天気</a>
+  <a class="nav-btn" href="#map">地図</a>
+  <a class="nav-btn" href="#day1">Day 1</a>
+  <a class="nav-btn" href="#day2">Day 2</a>
+  <a class="nav-btn" href="#day3">Day 3</a>
+  <a class="nav-btn" href="#day4">Day 4</a>
+  <a class="nav-btn" href="#day5">Day 5</a>
+  <a class="nav-btn" href="#checklist">チェックリスト</a>
+  <a class="nav-btn" href="#converter">通貨換算</a>
+  <a class="nav-btn" href="#benefits">特典</a>
+  <a class="nav-btn" href="#spotlinks">スポット一覧</a>
+</nav>
+
+<div class="container">
+
+  <!-- SETUP BANNER -->
+  <div class="setup-banner" id="setupBanner">
+    ⚙️ <strong>Firebase未設定のため変更はこのブラウザのみに保存されます。</strong>
+    妻と共有するにはHTMLファイル内の <code>FIREBASE_CONFIG</code> を更新してください。
+  </div>
+
+  <!-- CURRENCY CONVERTER -->
+  <section id="converter">
+    <div class="section-label">💱 通貨換算 — シンガポールドル → 人民元 / 日本円</div>
+    <div class="fx-card">
+      <div class="fx-input-row">
+        <div class="fx-input-wrap">
+          <span>S$</span>
+          <input class="fx-input" id="fxInput" type="number" min="0" step="0.01" placeholder="0.00" oninput="calcFx()" />
+        </div>
+      </div>
+      <div class="fx-results">
+        <div class="fx-result">
+          <div class="fx-result-label">中国人民元</div>
+          <div class="fx-result-flag">🇨🇳</div>
+          <div class="fx-result-amount" id="fxCNY">—</div>
+          <div class="fx-result-currency">CNY (¥)</div>
+        </div>
+        <div class="fx-result">
+          <div class="fx-result-label">日本円</div>
+          <div class="fx-result-flag">🇯🇵</div>
+          <div class="fx-result-amount" id="fxJPY">—</div>
+          <div class="fx-result-currency">JPY (¥)</div>
+        </div>
+      </div>
+      <div class="fx-rate-row">
+        <div class="fx-rates" id="fxRates"><span class="fx-loading-msg">レートを取得中...</span></div>
+        <button class="fx-refresh" onclick="fetchRates()">🔄 更新</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FLIGHTS -->
+  <section id="flights">
+    <div class="section-label">✈ フライト情報</div>
+    <div class="flight-grid">
+      <div class="flight-card">
+        <div class="flight-dir">往路</div>
+        <div class="flight-route">PVG → SIN</div>
+        <div class="flight-info">5月3日（日）<br>08:05 出発 → 13:25 到着<br>チャンギ空港 T3<br>エコノミー(W) · 受託手荷物 30kg</div>
+        <div class="flight-num">SQ827 · A350-900 · 予約番号: DYPF2I</div>
+      </div>
+      <div class="flight-card">
+        <div class="flight-dir">復路（深夜便）</div>
+        <div class="flight-route">SIN → PVG</div>
+        <div class="flight-info">5月8日（金）<br>01:15 出発 → 06:35 到着<br>チャンギ空港 T3<br>エコノミー(M) · 受託手荷物 30kg</div>
+        <div class="flight-num">SQ826 · A350-900</div>
+      </div>
+    </div>
+    <div style="background:var(--gold-light);border-radius:var(--radius-sm);padding:11px 14px;margin-top:10px;font-size:12px;color:#7A5800;border:0.5px solid #D4B060;">
+      ⚠️ <strong>SQ826は深夜01:15発。</strong> 5月7日（木）の夜にJewel Changiで「早期手荷物預け」をして身軽に最終夕食を楽しみ、21:00頃に出国するのがベストプラン。
+    </div>
+  </section>
+
+  <!-- HOTEL -->
+  <section id="hotel">
+    <div class="section-label">🏨 ホテル</div>
+    <div class="hotel-card">
+      <div class="hotel-icon">🏨</div>
+      <div>
+        <div class="hotel-name">JW Marriott Hotel Singapore South Beach<span class="badge bg">Platinum Elite</span></div>
+        <div class="hotel-detail">
+          📍 30 Beach Road, Singapore<br>
+          チェックイン: 5月3日（日）15:00 / チェックアウト: 5月7日（木）<strong style="color:var(--teal);">16:00</strong>（Platinum特典）<br>
+          1 King Bed · Premier Guest Room · 4泊 · S$2,411.20 · 確認番号: <span style="font-family:'DM Mono',monospace;">#93479246</span>
+        </div>
+        <div style="margin-top:8px;"><a href="https://maps.google.com/?cid=10696474480720568431" target="_blank" style="font-size:12px;color:var(--teal);text-decoration:none;font-weight:500;">📍 Googleマップで見る →</a></div>
+      </div>
+    </div>
+    <div style="background:var(--teal-light);border-radius:var(--radius-sm);padding:11px 14px;margin-top:10px;font-size:12px;color:var(--teal);border:0.5px solid #90C8C0;">
+      ✅ <strong>Platinum Elite特典（チェックイン時に確認を）：</strong>①ウェルカムギフト選択（1,000ptまたはダイニングクレジット） ②スイートへのアップグレード申請（空室次第） ③16:00レイトチェックアウト ④50%ボーナスポイント
+    </div>
+  </section>
+
+  <!-- FILES -->
+  <section id="files">
+    <div class="section-label">📎 関連ファイル</div>
+    <div class="files-list">
+      <div class="file-item">
+        <div class="file-icon">✈️</div>
+        <div class="file-info"><div class="file-name">浅野亮 — 航空券 eTicket</div><div class="file-meta">SQ827 (PVG→SIN 5/3) · SQ826 (SIN→PVG 5/8) · DYPF2I</div></div>
+        <div class="file-actions"><a class="file-btn" href="files/eticketMrASANOAkira.pdf" target="_blank">表示</a><a class="file-btn dl" href="files/eticketMrASANOAkira.pdf" download>DL</a></div>
+      </div>
+      <div class="file-item">
+        <div class="file-icon">✈️</div>
+        <div class="file-info"><div class="file-name">王思思 — 航空券 eTicket</div><div class="file-meta">SQ827 (PVG→SIN 5/3) · SQ826 (SIN→PVG 5/8) · DYPF2I</div></div>
+        <div class="file-actions"><a class="file-btn" href="files/eticketMrsWANGSisi.pdf" target="_blank">表示</a><a class="file-btn dl" href="files/eticketMrsWANGSisi.pdf" download>DL</a></div>
+      </div>
+      <div class="file-item">
+        <div class="file-icon">✈️</div>
+        <div class="file-info"><div class="file-name">浅野礼惟 — 航空券 eTicket</div><div class="file-meta">SQ827 (PVG→SIN 5/3) · SQ826 (SIN→PVG 5/8) · DYPF2I</div></div>
+        <div class="file-actions"><a class="file-btn" href="files/eticketMissASANORay.pdf" target="_blank">表示</a><a class="file-btn dl" href="files/eticketMissASANORay.pdf" download>DL</a></div>
+      </div>
+      <div class="file-item">
+        <div class="file-icon">🏨</div>
+        <div class="file-info"><div class="file-name">JW Marriott South Beach — 予約確認書</div><div class="file-meta">確認番号: #93479246 · 5月3〜7日 · 4泊</div></div>
+        <div class="file-actions"><a class="file-btn" href="files/Reservation_Confirmation_93479246_for_JW_Marriott_Hotel_Singapore_South_Beach.pdf" target="_blank">表示</a><a class="file-btn dl" href="files/Reservation_Confirmation_93479246_for_JW_Marriott_Hotel_Singapore_South_Beach.pdf" download>DL</a></div>
+      </div>
+      <div class="file-item">
+        <div class="file-icon">🔗</div>
+        <div class="file-info"><div class="file-name">Marriott Bonvoy × KrisFlyer 連携証明</div><div class="file-meta">ポイント・マイル相互交換に必要</div></div>
+        <div class="file-actions"><a class="file-btn" href="files/Your_Marriott_Bonvoy_and_KrisFlyer_Accounts_Are_Linked.pdf" target="_blank">表示</a><a class="file-btn dl" href="files/Your_Marriott_Bonvoy_and_KrisFlyer_Accounts_Are_Linked.pdf" download>DL</a></div>
+      </div>
+      <div class="file-item">
+        <div class="file-icon">📄</div>
+        <div class="file-info"><div class="file-name">利用規約 (Terms &amp; Conditions)</div><div class="file-meta">SQ航空券・MBS特典等の利用条件</div></div>
+        <div class="file-actions"><a class="file-btn" href="files/TermsConditions.pdf" target="_blank">表示</a><a class="file-btn dl" href="files/TermsConditions.pdf" download>DL</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WEATHER -->
+  <section id="weather">
+    <div class="section-label">🌤 現地天気予報 — シンガポール 5月3〜7日</div>
+    <div id="weather-cards"><div class="wx-loading">🌏 天気データを取得中...</div></div>
+  </section>
+
+  <!-- MAP -->
+  <section id="map">
+    <div class="section-label">🗺 主要スポット マップ</div>
+    <div class="map-wrap">
+      <div id="trip-map" style="width:100%;height:420px;"></div>
+      <div class="map-note">📍 ピンをクリックするとGoogleマップが別ウィンドウで開きます</div>
+    </div>
+  </section>
+
+  <!-- DAY-BY-DAY -->
+  <section id="itinerary">
+    <div class="section-label">📅 日程詳細</div>
+    <div class="day-card" id="day1">
+      <div class="day-header" onclick="tog(this)">
+        <div class="day-num" style="background:var(--day1-l);color:var(--day1);">1</div>
+        <div class="day-title"><h2>Day 1 · 5月3日（日） — 到着 &amp; マリーナベイの夜</h2><p>SQ827 上海出発 → チャンギ着 → ホテル → マーライオン → ラウ・パ・サット</p></div>
+        <button class="edit-btn" onclick="toggleEdit(event,'day1')">✏ 編集</button>
+        <span class="day-chev open">▼</span>
+      </div>
+      <div class="day-body open" id="day1-body"></div>
+    </div>
+    <div class="day-card" id="day2">
+      <div class="day-header" onclick="tog(this)">
+        <div class="day-num" style="background:var(--day2-l);color:var(--day2);">2</div>
+        <div class="day-title"><h2>Day 2 · 5月4日（月） — MBS特典 &amp; ガーデンズ</h2><p>Sands Lifestyle Prestige取得 → スカイパーク無料 → ガーデンズ → 光のショー</p></div>
+        <button class="edit-btn" onclick="toggleEdit(event,'day2')">✏ 編集</button>
+        <span class="day-chev">▼</span>
+      </div>
+      <div class="day-body" id="day2-body"></div>
+    </div>
+    <div class="day-card" id="day3">
+      <div class="day-header" onclick="tog(this)">
+        <div class="day-num" style="background:var(--day3-l);color:var(--day3);">3</div>
+        <div class="day-title"><h2>Day 3 · 5月5日（火） — ユニバーサル・スタジオ</h2><p>セントーサ島でテーマパーク終日 → 夕方クラーク・キーでディナー</p></div>
+        <button class="edit-btn" onclick="toggleEdit(event,'day3')">✏ 編集</button>
+        <span class="day-chev">▼</span>
+      </div>
+      <div class="day-body" id="day3-body"></div>
+    </div>
+    <div class="day-card" id="day4">
+      <div class="day-header" onclick="tog(this)">
+        <div class="day-num" style="background:var(--day4-l);color:var(--day4);">4</div>
+        <div class="day-title"><h2>Day 4 · 5月6日（水） — 動物園 &amp; チャイナタウン</h2><p>朝の動物園（Jungle Breakfast） → 午後チャイナタウンでお土産 → フードストリートで夕食</p></div>
+        <button class="edit-btn" onclick="toggleEdit(event,'day4')">✏ 編集</button>
+        <span class="day-chev">▼</span>
+      </div>
+      <div class="day-body" id="day4-body"></div>
+    </div>
+    <div class="day-card" id="day5">
+      <div class="day-header" onclick="tog(this)">
+        <div class="day-num" style="background:var(--day5-l);color:var(--day5);">5</div>
+        <div class="day-title"><h2>Day 5 · 5月7日（木） — チェックアウト &amp; Jewel → 深夜出発</h2><p>Platinum 16:00 C/O → Jewel Changi 早期手荷物預け → 最終夕食 → SQ826 01:15発</p></div>
+        <button class="edit-btn" onclick="toggleEdit(event,'day5')">✏ 編集</button>
+        <span class="day-chev">▼</span>
+      </div>
+      <div class="day-body" id="day5-body"></div>
+    </div>
+  </section>
+
+  <!-- CHECKLIST -->
+  <section id="checklist">
+    <div class="section-label">✅ チェックリスト</div>
+    <div class="cl-wrap" id="clContainer"></div>
+  </section>
+
+  <!-- BENEFITS -->
+  <section id="benefits">
+    <div class="section-label">🎁 会員特典まとめ</div>
+    <div class="benefit-grid">
+      <div class="benefit-card"><h3>🏨 Marriott Bonvoy Platinum Elite</h3><ul>
+        <li>チェックアウト 16:00（通常12:00）</li><li>ウェルカムギフト（1,000pt or F&amp;B）</li>
+        <li>スイートへのアップグレード申請</li><li>50%ボーナスポイント加算</li>
+        <li>MarriottポイントをKrisFlyerマイルに3:1で交換可</li>
+      </ul></div>
+      <div class="benefit-card"><h3>🎰 楽天プラチナ × MBS</h3><ul>
+        <li>Sands Lifestyle Prestige 3ヶ月無料昇格</li><li>スカイパーク展望デッキ 無料（S$26/人）</li>
+        <li>アートサイエンス・ミュージアム 無料</li><li>サンパンライド（運河ボート）無料</li>
+        <li>250以上の店舗で最大20%リゾートドル還元</li>
+      </ul></div>
+      <div class="benefit-card"><h3>✈ KrisFlyer × Kris+アプリ</h3><ul>
+        <li>Elite Silver：優先搭乗・優先手荷物取扱</li><li>無料標準座席選択（エコノミー）</li>
+        <li>Kris+：シンガポール1,700以上の店で最大6マイル/SGD</li><li>Chopeで予約するたびに100マイル</li>
+        <li>KrisShop事前注文で免税価格購入</li>
+      </ul></div>
+      <div class="benefit-card"><h3>🔗 Marriott × KrisFlyer 連携特典</h3><ul>
+        <li>KrisFlyer Elite Silver 12ヶ月延長</li><li>MarriottポイントをKrisFlyerに3:1で交換</li>
+        <li>KrisFlyerマイルをMarriottに4:3で交換可</li>
+        <li>ホテル滞在でポイントかマイルを選択積算</li>
+      </ul></div>
+    </div>
+  </section>
+
+  <!-- SPOT LINKS -->
+  <section id="spotlinks">
+    <div class="section-label">📍 各スポット リンク集</div>
+    <div class="spot-grid">
+      <a class="spot-card" href="https://maps.google.com/?cid=10696474480720568431" target="_blank"><div class="spot-day">Hotel</div><div class="spot-name">🏨 JW Marriott South Beach</div><div class="spot-note">30 Beach Road</div><div class="spot-maps">Google Maps →</div></a>
+      <a class="spot-card" href="https://maps.google.com/?cid=7398674140980442023" target="_blank"><div class="spot-day">Day 1</div><div class="spot-name">🦁 マーライオン公園</div><div class="spot-note">1 Fullerton Rd</div><div class="spot-maps">Google Maps →</div></a>
+      <a class="spot-card" href="https://maps.google.com/?cid=18296669017417104736" target="_blank"><div class="spot-day">Day 1 🍽️</div><div class="spot-name">🍢 ラウ・パ・サット</div><div class="spot-note">18 Raffles Quay</div><div class="spot-maps">Google Maps →</div></a>
+      <a class="spot-card" href="https://maps.google.com/?cid=8374539842675743178" target="_blank"><div class="spot-day">Day 2 ⚡</div><div class="spot-name">⭐ Sandsライフスタイルカウンター</div><div class="spot-note">MBS The Shoppes B1</div><div class="spot-maps">Google Maps →</div></a>
+      <a class="spot-card" href="https://maps.google.com/?cid=588707449624412211" target="_blank"><div class="spot-day">Day 2 FREE ✨</div><div class="spot-name">🏙️ スカイパーク展望デッキ</div><div class="spot-note">Marina Bay Sands, Tower 3</div><div class="spot-maps">Google Maps →</div></a>
+      <a class="spot-card" href="https://maps.google.com/?cid=7064342931399756406" target="_blank"><div class="spot-day">Day 2</div><div class="spot-name">🌿 ガーデンズ・バイ・ザ・ベイ</div><div class="spot-note">18 Marina Gardens Dr</div><div class="spot-maps">Google Maps →</div></a>
+      <a class="spot-card" href="http://sataybythebay.com.sg/" target="_blank"><div class="spot-day">Day 2 🍽️</div><div class="spot-name">🍢 サテー・バイ・ザ・ベイ</div><div class="spot-note">ガーデンズ内</div><div class="spot-maps">公式サイト →</div></a>
+      <a class="spot-card" href="https://maps.google.com/?cid=3500426646667023007" target="_blank"><div class="spot-day">Day 3 🎢</div><div class="spot-name">🎡 ユニバーサル・スタジオ</div><div class="spot-note">8 Sentosa Gateway</div><div class="spot-maps">Google Maps →</div></a>
+      <a class="spot-card" href="https://maps.google.com/?cid=12450201583291173640" target="_blank"><div class="spot-day">Day 3 🍽️</div><div class="spot-name">🍷 クラーク・キー</div><div class="spot-note">Clarke Quay, Singapore</div><div class="spot-maps">Google Maps →</div></a>
+      <a class="spot-card" href="https://maps.google.com/?cid=12976272166016981905" target="_blank"><div class="spot-day">Day 4 🐘</div><div class="spot-name">🦁 シンガポール動物園</div><div class="spot-note">80 Mandai Lake Rd</div><div class="spot-maps">Google Maps →</div></a>
+      <a class="spot-card" href="https://maps.google.com/?cid=558626411650668203" target="_blank"><div class="spot-day">Day 4 🍽️</div><div class="spot-name">🥢 チャイナタウン・フードストリート</div><div class="spot-note">41 Smith St</div><div class="spot-maps">Google Maps →</div></a>
+      <a class="spot-card" href="https://maps.google.com/?cid=13261360313192835779" target="_blank"><div class="spot-day">Day 5 🧳</div><div class="spot-name">💧 Jewel Changi Airport</div><div class="spot-note">早期手荷物預け · 夕食 · 滝</div><div class="spot-maps">Google Maps →</div></a>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div style="margin-bottom:8px;font-family:'Playfair Display',serif;font-size:16px;color:rgba(255,255,255,.7);font-style:italic;">Have a wonderful trip ✈</div>
+  浅野家 シンガポール旅行 · 2026年5月3〜7日<br>
+  作成日: <span>2026年4月18日</span> · JW Marriott <span>#93479246</span> · SQ827 / SQ826 <span>DYPF2I</span>
+</footer>
+
+<div class="sync-dot" id="syncDot"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+// ============================================================
+// FIREBASE設定 — ここを自分の設定に変更（上のガイド参照）
+// ============================================================
+const FIREBASE_CONFIG = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  databaseURL: "https://YOUR_PROJECT-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "YOUR_PROJECT",
+  storageBucket: "YOUR_PROJECT.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+const DB_PATH = "tripAsano2026";
+const USE_FIREBASE = (FIREBASE_CONFIG.apiKey !== "YOUR_API_KEY");
+
+// ============================================================
+// WEATHER — Open-Meteo（シンガポール, APIキー不要）
+// ============================================================
+const WX_MAP = {
+  0:{i:'☀️',n:'快晴'},1:{i:'🌤️',n:'晴れ'},2:{i:'⛅',n:'曇り時々晴れ'},3:{i:'☁️',n:'曇り'},
+  45:{i:'🌫️',n:'霧'},48:{i:'🌫️',n:'着氷性の霧'},
+  51:{i:'🌦️',n:'霧雨（弱）'},53:{i:'🌦️',n:'霧雨'},55:{i:'🌦️',n:'霧雨（強）'},
+  61:{i:'🌧️',n:'雨（弱）'},63:{i:'🌧️',n:'雨'},65:{i:'🌧️',n:'大雨'},
+  80:{i:'🌦️',n:'にわか雨（弱）'},81:{i:'🌦️',n:'にわか雨'},82:{i:'🌦️',n:'強いにわか雨'},
+  95:{i:'⛈️',n:'雷雨'},96:{i:'⛈️',n:'雷雨（ひょう）'},99:{i:'⛈️',n:'激しい雷雨'},
+};
+function wxInfo(code){
+  if(WX_MAP[code]) return WX_MAP[code];
+  if(code<=3) return {i:'🌤️',n:'晴れ'};
+  if(code<=55) return {i:'🌦️',n:'霧雨'};
+  if(code<=65) return {i:'🌧️',n:'雨'};
+  if(code<=82) return {i:'🌦️',n:'にわか雨'};
+  return {i:'⛈️',n:'雷雨'};
+}
+
+const WX_DAY_LABELS = [
+  {day:'Day 1',date:'5/3（日）'},{day:'Day 2',date:'5/4（月）'},
+  {day:'Day 3',date:'5/5（火）'},{day:'Day 4',date:'5/6（水）'},{day:'Day 5',date:'5/7（木）'},
+];
+
+async function fetchWeather(){
+  const el = document.getElementById('weather-cards');
+  el.innerHTML = '<div class="wx-loading">🌏 天気データを取得中...</div>';
+  try {
+    const url = 'https://api.open-meteo.com/v1/forecast?latitude=1.3521&longitude=103.8198' +
+      '&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weathercode' +
+      '&timezone=Asia%2FSingapore&start_date=2026-05-03&end_date=2026-05-07';
+    const res = await fetch(url);
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const data = await res.json();
+    if(!data.daily || !data.daily.time || data.daily.time.length === 0) throw new Error('データなし');
+    renderWeather(data.daily);
+  } catch(e) {
+    el.innerHTML = `<div class="wx-error">⚠️ 天気データの取得に失敗しました（${e.message}）。<br>インターネット接続を確認して再試行してください。<br><button onclick="fetchWeather()" style="margin-top:8px;background:var(--coral);color:white;border:none;border-radius:6px;padding:6px 14px;cursor:pointer;font-size:12px;">再試行</button></div>`;
+  }
+}
+
+function renderWeather(d){
+  const el = document.getElementById('weather-cards');
+  let html = '<div class="wx-cards">';
+  d.time.forEach((date, i) => {
+    const wx = wxInfo(d.weathercode[i]);
+    const hi = Math.round(d.temperature_2m_max[i]);
+    const lo = Math.round(d.temperature_2m_min[i]);
+    const rain = d.precipitation_probability_max[i] ?? 0;
+    const rc = rain >= 70 ? '#C0432A' : rain >= 40 ? '#8A6A1A' : '#2A7B6F';
+    const label = WX_DAY_LABELS[i] || {day:'Day'+(i+1), date:date};
+    html += `<div class="wx-card">
+      <div class="wx-day">${label.day}<br>${label.date}</div>
+      <div class="wx-icon">${wx.i}</div>
+      <div class="wx-name">${wx.n}</div>
+      <div class="wx-temp"><span class="wx-hi">${hi}°</span><span class="wx-sep">/</span><span class="wx-lo">${lo}°</span></div>
+      <div class="wx-rain-bar"><div class="wx-rain-fill" style="width:${rain}%;background:${rc};"></div></div>
+      <div class="wx-rain-pct" style="color:${rc};">☔ ${rain}%</div>
+    </div>`;
+  });
+  html += '</div>';
+  const now = new Date();
+  const fmt = `${now.getFullYear()}/${now.getMonth()+1}/${now.getDate()} ${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`;
+  html += `<div class="wx-footer">
+    <div class="wx-updated">📡 ${fmt} 更新 · Open-Meteo提供 · ページ読み込み時に自動更新</div>
+    <button class="wx-refresh-btn" onclick="fetchWeather()">🔄 更新</button>
+  </div>`;
+  el.innerHTML = html;
+}
+
+// ============================================================
+// SCHEDULE DATA
+// ============================================================
+const TAG_COLOR = {
+  flight:'#1A5E8A', move:'#9AABB8', hotel:'#C9973A',
+  sightseeing:null, meal:'#C9973A', priority:'#C0432A', other:'#B0AAA4'
+};
+const DAY_COLOR = {day1:'#1A5E8A',day2:'#2A7B6F',day3:'#8A3A2A',day4:'#2A6B3A',day5:'#8A6A1A'};
+
+const DEFAULT_DATA = {
+  initialized:true,
+  schedules:{
+    day1:[
+      {id:'d1-1',time:'08:05',title:'上海浦東空港 (PVG) 出発',desc:'SQ827便 · エコノミークラス · KrisFlyer Elite Silverで優先搭乗 · このフライトで1,773マイル積算予定',tag:'flight'},
+      {id:'d1-2',time:'13:25',title:'チャンギ空港 T3 到着',desc:'入国審査 → 手荷物受取。KrisFlyer Elite Silver優先ハンドリング。ホテルまでタクシー約40分（S$25〜35）',tag:'move'},
+      {id:'d1-3',time:'15:00',title:'JW Marriott チェックイン',desc:'フロントで「Platinum Elite」と伝える：①ウェルカムギフト選択（1,000ptまたはダイニングクレジット） ②スイートアップグレード希望 ③KrisFlyerまたはMarriottポイントの積算選択',tag:'hotel'},
+      {id:'d1-4',time:'16:30',title:'マーライオン公園 &amp; マリーナベイ散策',desc:'ホテルから徒歩15分。ライオンの頭を持つ噴水が湾岸に鎮座するシンガポールの象徴。夕暮れの光の中でレイちゃんの初シンガポール写真を撮ろう！',tag:'sightseeing'},
+      {id:'d1-5',time:'18:00',title:'夕食 — ラウ・パ・サット',desc:'1894年建造のヴィクトリア様式の鋳鉄製パビリオンが圧巻の名物ホーカーセンター。外の通りで焼くサテー、海南チキンライス、ラクサは絶対に食べたい。Kris+で支払いしてマイル積算も忘れずに',tag:'meal'},
+      {id:'d1-6',time:'20:00',title:'ホテルへ戻る · 早めに就寝',desc:'翌日はMBS・Sandsライフスタイルカウンターが開く10:30に合わせて早起きが必要。体力温存のため早めの就寝を',tag:'other'},
+    ],
+    day2:[
+      {id:'d2-1',time:'09:30',title:'朝食後 → マリーナベイ・サンズへ',desc:'タクシーまたは徒歩でThe Shoppes at MBSへ。到着したらまず真っ先にSandsライフスタイルカウンターへ直行！スカイパークには先に行かないこと',tag:'move'},
+      {id:'d2-2',time:'10:00',title:'⚡ Sandsライフスタイルカウンター — Prestige取得（最優先）',desc:'楽天プラチナ会員のアプリ画面＋パスポートを提示。近くのカフェでS$1以上を購入して登録完了。場所：B1サンパンライド近く（10:30オープン）。これでスカイパーク（S$78相当）＋アートサイエンス美術館＋サンパンライドが全部無料に！',tag:'priority'},
+      {id:'d2-3',time:'11:00',title:'スカイパーク展望デッキ',desc:'楽天Prestigeで無料（通常S$26/人×3名＝S$78の節約）。Tower 3・57階からの360°パノラマ絶景。かの有名なインフィニティプールが眼下に広がる、シンガポール最高のビュースポット',tag:'sightseeing'},
+      {id:'d2-4',time:'12:30',title:'昼食 — MBS周辺',desc:'The Shoppes内のフードコート、またはガーデンズ方面のレストランで昼食。Kris+で支払いを',tag:'meal'},
+      {id:'d2-5',time:'14:00',title:'ガーデンズ・バイ・ザ・ベイ 🌿',desc:'世界最大のガラス温室「フラワードーム」と、35mの滝が霧の中に流れ落ちる神秘的な「クラウドフォレスト」。熱帯山岳植物が生い茂る夢のような空間にレイちゃんも大興奮間違いなし！',tag:'sightseeing'},
+      {id:'d2-6',time:'18:00',title:'夕食 — サテー・バイ・ザ・ベイ',desc:'ガーデンズ内のウォーターフロントに立つ開放的なホーカー。輝くスーパーツリーとマリーナベイの夜景を眺めながらサテーや海鮮料理を楽しむ雰囲気抜群のディナー。Kris+で支払いを',tag:'meal'},
+      {id:'d2-7',time:'19:45',title:'ガーデン・ラプソディ 光＆音のショー ✨',desc:'毎晩19:45と20:45の無料ショー（約16分）。高さ25〜50mのスーパーツリーが音楽と光のシンフォニーに変身するシンガポール最高の無料体験。レイちゃんが一生忘れない思い出になる！',tag:'sightseeing'},
+    ],
+    day3:[
+      {id:'d3-1',time:'08:30',title:'朝食後 → セントーサ島へ',desc:'タクシーで約40分（S$20〜25）。USS開園の10:00に合わせて早めに出発し、混雑前に人気ライドへ向かう',tag:'move'},
+      {id:'d3-2',time:'10:00',title:'ユニバーサル・スタジオ・シンガポール 🎢',desc:'開園と同時に入場。レイちゃんへのおすすめ：シュレック4-Dムービー（全年齢OK）、ライド・トゥ・ザ・ムーン（穏やか）、ファー・ファー・アウェイ城（プス・イン・ブーツ）、ミニオン・メイヘム（爆笑必至）。午前中に人気ライドを攻略しよう',tag:'sightseeing'},
+      {id:'d3-3',time:'13:00',title:'昼食 — USS内レストラン',desc:'スター・プライド・ダイナーなど園内のレストランでエアコンに当たりながら休憩。熱帯の暑さ＋興奮で体力消耗するのでしっかり水分補給を',tag:'meal'},
+      {id:'d3-4',time:'17:00',title:'ホテルへ戻る · シャワー &amp; 休憩',desc:'セントーサ島からタクシーで帰宿。夕食前にシャワーを浴びてリフレッシュ',tag:'other'},
+      {id:'d3-5',time:'18:00',title:'夕食 — クラーク・キー',desc:'シンガポール川沿いの活気あふれる飲食街。タイ料理、海鮮、和食、洋食とバリエーション豊富。川面に光が映える夜のテラス席が最高。Kris+で支払いを',tag:'meal'},
+    ],
+    day4:[
+      {id:'d4-1',time:'08:00',title:'朝食後 → シンガポール動物園へ',desc:'タクシー約35分（S$25〜30）。Jungle Breakfastは09:00開始で事前予約必須（mandai.comで要予約！）',tag:'move'},
+      {id:'d4-2',time:'09:00',title:'シンガポール動物園 🐘',desc:'世界屈指の開放型動物園。「Jungle Breakfast with Wildlife」ではボルネオオランウータンと一緒に朝食を楽しめる！見どころ：ホワイトタイガー・スマトラゾウとの近距離体験・コモドドラゴン。レイちゃんはSplash Safari Zoneの水遊びも満喫できる',tag:'sightseeing'},
+      {id:'d4-3',time:'13:00',title:'昼食 — 動物園内レストラン',desc:'動物園内のレストランでエアコンに当たりながら昼食休憩',tag:'meal'},
+      {id:'d4-4',time:'15:00',title:'チャイナタウン — お土産ショッピング',desc:'パゴダ・ストリート＆スミス・ストリートでお土産探し。ベンガワンソロのクッキー、工芸品、漢方食材など。「仏牙寺龍華院」は建築が美しく入場無料。Kris+パートナー店でマイル積算も忘れずに',tag:'sightseeing'},
+      {id:'d4-5',time:'17:00',title:'ホテルへ戻る · 休憩 · 荷造り開始',desc:'翌日のチェックアウトに向けて荷造り開始。チェックアウトは16:00（Platinum特典）',tag:'other'},
+      {id:'d4-6',time:'18:00',title:'夕食 — チャイナタウン・フードストリート',desc:'シンガポール料理の真髄が一堂に：バクテー（漢方豚骨スープ）、海南チキンライス、チリクラブ、炒粿条（クイティアオ）。旅の締めに相応しい本場の味。Kris+で支払いを',tag:'meal'},
+    ],
+    day5:[
+      {id:'d5-1',time:'09:00',title:'最後の朝食 at JW Marriott',desc:'ゆっくり最後のホテル朝食を堪能。荷造りを完了させる。SQ826のオンラインチェックインをSingapore Airアプリで（出発48時間前＝5/6 01:15以降から可能）',tag:'hotel'},
+      {id:'d5-2',time:'10:00',title:'オーチャード・ロード（自由時間）',desc:'シンガポール最大の全長2.2kmのショッピング街。IONオーチャード（最先端モール）、高島屋、ベンガワンソロ（パンダンレイヤーケーキ＝最高のお土産）でラストショッピング。Kris+パートナー店でマイルを稼ごう',tag:'sightseeing'},
+      {id:'d5-3',time:'16:00',title:'チェックアウト 16:00 — Platinum特典 🌟',desc:'通常12:00チェックアウトのところ、Platinum Elite特典で16:00まで延長。家族みんなでゆっくり準備できる。Grabタクシーを事前予約しておくと安心',tag:'hotel'},
+      {id:'d5-4',time:'17:00',title:'Jewel Changi 到着 — 早期手荷物預け',desc:'Level 1の早期手荷物預けカウンターで荷物を預ける。締め切りは22:15。荷物を預けたら手ぶらでJewelを満喫！',tag:'flight'},
+      {id:'d5-5',time:'17:30',title:'HSBC Rain Vortex（屋内滝）💧',desc:'世界最大の屋内滝、高さ40mのRain Vortexが空港内に屹立。「資生堂フォレストバレー」の2,500本以上の木々と植物に囲まれた幻想的な空間。シンガポール最後の特大サプライズをレイちゃんへ！',tag:'sightseeing'},
+      {id:'d5-6',time:'18:00',title:'最終夕食 — Jewel内レストラン',desc:'シェイクシャック（スマッシュバーガー）、ティム・ホー・ワン（ミシュラン4分星の点心）、A&amp;W（クラシック）、ベンガワンソロ（ニョニャケーキ＆スイーツ）。旅の最後にKris+でマイルを積み上げよう！',tag:'meal'},
+      {id:'d5-7',time:'21:00',title:'出国審査 → 搭乗ゲート（T3）',desc:'荷物は預け済み・チェックイン済みのため出国審査に直行。KrisFlyer Elite Silver優先セキュリティレーンを活用。搭乗前にゲートでゆっくり休憩',tag:'flight'},
+      {id:'d5-8',time:'01:15',title:'SQ826 シンガポール発 ✈ → 上海へ',desc:'上海浦東空港には5月8日（金）06:35着。レイちゃんは機内でぐっすり眠れる。最後の1,773マイルを積算。旅行通算マイル積算：約3,546マイル',tag:'flight'},
+    ],
+  },
+  checklists:{
+    pretravel:{title:'旅行前にやること',items:[
+      {id:'pt1',text:'Kris+アプリをインストール・KrisFlyer番号登録・自動転送ON',checked:false},
+      {id:'pt2',text:'USSチケットをKlookまたは公式で事前購入（日付指定）',checked:false},
+      {id:'pt3',text:'Jungle Breakfast（動物園公式 mandai.com）を事前予約（09:00〜）',checked:false},
+      {id:'pt4',text:'SQ826オンラインチェックイン（SingaporeAirアプリ、5/6 01:15以降）',checked:false},
+      {id:'pt5',text:'MBS Sands Lifestyle オンライン事前登録',checked:false},
+      {id:'pt6',text:'Grabアプリをインストール・クレジットカード登録',checked:false},
+      {id:'pt7',text:'シンガポール用wifiを契約',checked:false},
+    ]},
+    onsite:{title:'現地でやること',items:[
+      {id:'os1',text:'MBSカウンターでSands Prestige取得（楽天Pt画面+パスポート）',checked:false},
+      {id:'os2',text:'スカイパーク・アートサイエンス・サンパンライドの無料チケット発行',checked:false},
+      {id:'os3',text:'Changi Rewardsに登録（空港ショッピングでマイル獲得）',checked:false},
+      {id:'os4',text:'MarriottポイントかKrisFlyerマイル積算選択をフロントで確認',checked:false},
+    ]},
+  }
+};
+
+// ============================================================
+// APP STATE + STORAGE
+// ============================================================
+let appData = null;
+let fbDb = null;
+function clone(o){return JSON.parse(JSON.stringify(o));}
+function showSync(msg,dur){const el=document.getElementById('syncDot');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),dur||2500);}
+
+function initStorage(){
+  if(USE_FIREBASE){
+    try{
+      firebase.initializeApp(FIREBASE_CONFIG);
+      fbDb=firebase.database();
+      fbDb.ref(DB_PATH).on('value',snap=>{
+        const val=snap.val();
+        if(!val||!val.initialized){fbDb.ref(DB_PATH).set(clone(DEFAULT_DATA));}
+        else{appData=val;renderAll();showSync('🔄 同期完了');}
+      },err=>{console.warn('Firebase error:',err);loadLocal();});
+    }catch(e){console.warn('Firebase init error:',e);loadLocal();}
+  }else{
+    document.getElementById('setupBanner').classList.add('show');
+    loadLocal();
+  }
+}
+function loadLocal(){
+  const s=localStorage.getItem(DB_PATH);
+  appData=s?JSON.parse(s):clone(DEFAULT_DATA);
+  renderAll();
+}
+function saveData(){
+  if(USE_FIREBASE&&fbDb){
+    fbDb.ref(DB_PATH).set(appData).then(()=>showSync('✓ 保存・同期済み')).catch(()=>{localStorage.setItem(DB_PATH,JSON.stringify(appData));showSync('✓ ローカル保存');});
+  }else{localStorage.setItem(DB_PATH,JSON.stringify(appData));showSync('✓ 保存しました');}
+}
+
+// ============================================================
+// RENDER SCHEDULE
+// ============================================================
+function esc(s){if(!s)return '';return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function renderDay(dayId){
+  const body=document.getElementById(dayId+'-body');
+  if(!body||!appData)return;
+  const items=(appData.schedules&&appData.schedules[dayId])||[];
+  const dc=DAY_COLOR[dayId]||'#AAA';
+  const wasEditing=body.classList.contains('editing');
+  const wasOpen=body.classList.contains('open');
+  let html='<ul class="tl">';
+  items.forEach((item,i)=>{
+    const dotC=TAG_COLOR[item.tag]||dc;
+    const last=(i===items.length-1);
+    html+=`<li class="ti">
+      <div class="tl-l"><span class="tl-t">${esc(item.time||'')}</span><div class="tl-d" style="background:${dotC};"></div>${!last?'<div class="tl-ln"></div>':''}</div>
+      <div class="tc"><h3>${esc(item.title)}</h3>${item.desc?`<p>${esc(item.desc)}</p>`:''}</div>
+      <button class="ti-del" onclick="delItem('${dayId}','${esc(item.id)}')" title="削除">✕</button>
+    </li>`;
+  });
+  html+='</ul>';
+  html+=`<div class="add-form" id="af-${dayId}">
+    <label>スケジュールを追加</label>
+    <div class="frow">
+      <input type="text" id="af-time-${dayId}" placeholder="時刻 例: 14:30">
+      <input type="text" id="af-title-${dayId}" placeholder="タイトル（必須）">
+    </div>
+    <input type="text" id="af-desc-${dayId}" placeholder="詳細メモ（任意）">
+    <select id="af-tag-${dayId}">
+      <option value="other">種別を選択...</option>
+      <option value="sightseeing">📍 観光・アクティビティ</option>
+      <option value="meal">🍽️ 食事</option>
+      <option value="move">🚌 移動</option>
+      <option value="flight">✈️ フライト</option>
+      <option value="hotel">🏨 ホテル</option>
+      <option value="priority">⚡ 最優先事項</option>
+    </select>
+    <button class="add-form-btn" onclick="addItem('${dayId}')">+ 追加する</button>
+  </div>`;
+  body.innerHTML=html;
+  if(wasEditing)body.classList.add('editing');
+  if(wasOpen)body.classList.add('open');
+}
+function addItem(dayId){
+  const time=document.getElementById('af-time-'+dayId).value.trim();
+  const title=document.getElementById('af-title-'+dayId).value.trim();
+  const desc=document.getElementById('af-desc-'+dayId).value.trim();
+  const tag=document.getElementById('af-tag-'+dayId).value;
+  if(!title){alert('タイトルを入力してください');return;}
+  if(!appData.schedules)appData.schedules={};
+  if(!appData.schedules[dayId])appData.schedules[dayId]=[];
+  appData.schedules[dayId].push({id:'u'+Date.now(),time,title,desc,tag});
+  appData.schedules[dayId].sort((a,b)=>(a.time||'').localeCompare(b.time||''));
+  saveData();renderDay(dayId);
+}
+function delItem(dayId,itemId){
+  if(!confirm('このスケジュールを削除しますか？'))return;
+  appData.schedules[dayId]=(appData.schedules[dayId]||[]).filter(i=>i.id!==itemId);
+  saveData();renderDay(dayId);
+}
+
+// ============================================================
+// RENDER CHECKLISTS
+// ============================================================
+function renderChecklists(){
+  const container=document.getElementById('clContainer');
+  if(!container||!appData||!appData.checklists)return;
+  container.innerHTML='';
+  Object.entries(appData.checklists).forEach(([lid,list])=>{
+    const items=list.items||[];
+    const done=items.filter(i=>i.checked).length;
+    const pct=items.length?Math.round(done/items.length*100):0;
+    const rows=items.map(item=>`
+      <div class="cl-row${item.checked?' done':''}" id="clr-${item.id}">
+        <input type="checkbox" id="chk-${item.id}" ${item.checked?'checked':''} onchange="toggleCheck('${lid}','${item.id}',this.checked)">
+        <label for="chk-${item.id}">${esc(item.text)}</label>
+        <button class="cl-del" onclick="delCheck('${lid}','${item.id}')" title="削除">✕</button>
+      </div>`).join('');
+    container.innerHTML+=`
+      <div class="cl-card">
+        <div class="cl-head"><div class="cl-title">${esc(list.title)}</div><div class="cl-count">${done} / ${items.length} 完了</div></div>
+        <div class="cl-bar"><div class="cl-fill" style="width:${pct}%"></div></div>
+        <div class="cl-items">${rows}</div>
+        <div class="cl-add">
+          <input placeholder="新しい項目を追加..." id="cli-${lid}" onkeydown="if(event.key==='Enter')addCheck('${lid}')">
+          <button onclick="addCheck('${lid}')">追加</button>
+        </div>
+      </div>`;
+  });
+}
+function toggleCheck(lid,itemId,checked){const item=appData.checklists[lid].items.find(i=>i.id===itemId);if(item){item.checked=checked;saveData();renderChecklists();}}
+function addCheck(lid){const input=document.getElementById('cli-'+lid);const text=input.value.trim();if(!text)return;appData.checklists[lid].items.push({id:'c'+Date.now(),text,checked:false});input.value='';saveData();renderChecklists();}
+function delCheck(lid,itemId){appData.checklists[lid].items=appData.checklists[lid].items.filter(i=>i.id!==itemId);saveData();renderChecklists();}
+
+// ============================================================
+// UI HELPERS
+// ============================================================
+function renderAll(){['day1','day2','day3','day4','day5'].forEach(renderDay);renderChecklists();}
+function tog(hd){const body=hd.nextElementSibling;const chev=hd.querySelector('.day-chev');const isOpen=body.classList.contains('open');body.classList.toggle('open',!isOpen);chev.classList.toggle('open',!isOpen);}
+function toggleEdit(e,dayId){e.stopPropagation();const body=document.getElementById(dayId+'-body');const btn=e.currentTarget;const editing=body.classList.toggle('editing');btn.textContent=editing?'✓ 完了':'✏ 編集';btn.classList.toggle('active',editing);if(!body.classList.contains('open')){body.classList.add('open');body.previousElementSibling.querySelector('.day-chev').classList.add('open');}}
+function toggleGuide(toggle){const body=toggle.nextElementSibling;const isOpen=body.classList.contains('open');body.classList.toggle('open',!isOpen);toggle.classList.toggle('open',!isOpen);}
+
+// ============================================================
+// LEAFLET MAP
+// ============================================================
+(function(){
+  const map=L.map('trip-map',{zoomControl:true}).setView([1.310,103.870],12);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',maxZoom:19}).addTo(map);
+  const C={hotel:'#C9973A',d1:'#1A5E8A',d2:'#2A7B6F',d3:'#C0432A',d4:'#2A6B3A',d5:'#8A6A1A'};
+  function mkIcon(color,emoji){return L.divIcon({className:'',iconSize:[32,38],iconAnchor:[16,38],popupAnchor:[0,-42],html:`<div style="width:32px;height:38px;position:relative;filter:drop-shadow(0 2px 5px rgba(0,0,0,.4));"><svg viewBox="0 0 32 38" width="32" height="38" xmlns="http://www.w3.org/2000/svg"><path d="M16 0C8.27 0 2 6.27 2 14c0 9.33 14 24 14 24S30 23.33 30 14C30 6.27 23.73 0 16 0z" fill="${color}" stroke="white" stroke-width="1.5"/></svg><span style="position:absolute;top:3px;left:50%;transform:translateX(-50%);font-size:13px;line-height:1;">${emoji}</span></div>`});}
+  const spots=[
+    {lat:1.2945,lng:103.8558,name:'JW Marriott Hotel Singapore South Beach',sub:'4泊間の拠点。Platinum Elite特典で16:00チェックアウト。30 Beach Road',day:'ホテル',c:C.hotel,e:'🏨',url:'https://maps.google.com/?cid=10696474480720568431'},
+    {lat:1.2867,lng:103.8545,name:'マーライオン公園',sub:'シンガポールの象徴、ライオン頭の噴水が湾岸に立つ名所。夕暮れ時は絶景',day:'Day 1',c:C.d1,e:'🦁',url:'https://maps.google.com/?cid=7398674140980442023'},
+    {lat:1.2806,lng:103.8503,name:'ラウ・パ・サット',sub:'1894年建造のヴィクトリア様式ホーカーセンター。サテー・チキンライス・ラクサの名店が集結',day:'Day 1',c:C.d1,e:'🍢',url:'https://maps.google.com/?cid=18296669017417104736'},
+    {lat:1.2834,lng:103.8593,name:'Sandsライフスタイルカウンター',sub:'最優先！楽天プラチナ＋パスポートでPrestige取得 → スカイパーク等が無料に。B1サンパンライド近く',day:'Day 2 ⚡',c:C.d2,e:'⭐',url:'https://maps.google.com/?cid=8374539842675743178'},
+    {lat:1.2840,lng:103.8612,name:'スカイパーク展望デッキ',sub:'57階からの360°絶景。楽天Prestige特典で無料（通常S$26/人）。インフィニティプールが眼下に',day:'Day 2',c:C.d2,e:'🏙',url:'https://maps.google.com/?cid=588707449624412211'},
+    {lat:1.2816,lng:103.8636,name:'ガーデンズ・バイ・ザ・ベイ',sub:'フラワードーム（世界最大のガラス温室）＋クラウドフォレスト（35m屋内滝）。毎晩無料の光のショーも',day:'Day 2',c:C.d2,e:'🌿',url:'https://maps.google.com/?cid=7064342931399756406'},
+    {lat:1.2813,lng:103.8679,name:'サテー・バイ・ザ・ベイ',sub:'ガーデンズ内の開放的ホーカー。スーパーツリーと夜景を眺めながらサテーを楽しめる',day:'Day 2',c:C.d2,e:'🍢',url:'https://sataybythebay.com.sg/'},
+    {lat:1.2540,lng:103.8238,name:'ユニバーサル・スタジオ・シンガポール',sub:'シュレック・ミニオン・ジュラシックパーク等28のライド。6歳のレイちゃんに最適なアトラクション多数',day:'Day 3',c:C.d3,e:'🎡',url:'https://maps.google.com/?cid=3500426646667023007'},
+    {lat:1.2887,lng:103.8462,name:'クラーク・キー',sub:'シンガポール川沿いの賑やかな飲食街。タイ料理・海鮮・和食など夜は雰囲気抜群',day:'Day 3',c:C.d3,e:'🍷',url:'https://maps.google.com/?cid=12450201583291173640'},
+    {lat:1.4043,lng:103.7930,name:'シンガポール動物園',sub:'世界屈指の開放型動物園。オランウータンと朝食を楽しめるJungle Breakfastが圧巻。事前予約必須',day:'Day 4',c:C.d4,e:'🐘',url:'https://maps.google.com/?cid=12976272166016981905'},
+    {lat:1.2820,lng:103.8443,name:'チャイナタウン・フードストリート',sub:'本場のバクテー・チキンライス・チリクラブが集う食の殿堂。お土産ショッピングも',day:'Day 4',c:C.d4,e:'🥢',url:'https://maps.google.com/?cid=558626411650668203'},
+    {lat:1.3602,lng:103.9898,name:'Jewel Changi Airport',sub:'世界最大の屋内滝（40m）を有す空港施設。早期手荷物預けで身軽に楽しめる',day:'Day 5',c:C.d5,e:'💧',url:'https://maps.google.com/?cid=13261360313192835779'},
+  ];
+  spots.forEach(s=>{
+    const m=L.marker([s.lat,s.lng],{icon:mkIcon(s.c,s.e)}).addTo(map);
+    m.bindPopup(`<div style="font-family:'Noto Sans JP',sans-serif;min-width:185px;">
+      <div style="font-size:10px;color:#999;margin-bottom:3px;font-family:monospace;text-transform:uppercase;">${s.day}</div>
+      <div style="font-size:13px;font-weight:700;color:#1A1814;margin-bottom:4px;">${s.name}</div>
+      <div style="font-size:11.5px;color:#6B6560;margin-bottom:9px;line-height:1.5;">${s.sub}</div>
+      <a href="${s.url}" target="_blank" rel="noopener" style="display:inline-block;background:${s.c};color:#fff;font-size:11px;font-weight:600;padding:5px 12px;border-radius:12px;text-decoration:none;">Googleマップで開く →</a>
+    </div>`,{maxWidth:250});
+    m.on('click',()=>m.openPopup());
+  });
+})();
+
+// ============================================================
+// CURRENCY CONVERTER — Frankfurter API（無料・APIキー不要）
+// ============================================================
+let fxRates = { SGD_CNY: null, SGD_JPY: null, updatedAt: null };
+
+async function fetchRates() {
+  const ratesEl = document.getElementById('fxRates');
+  ratesEl.innerHTML = '<span class="fx-loading-msg">レートを取得中...</span>';
+  try {
+    // Frankfurter: SGDを基準にCNY・JPYを取得
+    const res = await fetch('https://api.frankfurter.app/latest?from=SGD&to=CNY,JPY');
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    fxRates.SGD_CNY = data.rates.CNY;
+    fxRates.SGD_JPY = data.rates.JPY;
+    fxRates.updatedAt = data.date;
+    const now = new Date();
+    const fmt = `${now.getMonth()+1}/${now.getDate()} ${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`;
+    ratesEl.innerHTML = `
+      <span>1 S$ = <strong>${fxRates.SGD_CNY.toFixed(4)}</strong> 元</span>
+      <span>1 S$ = <strong>${Math.round(fxRates.SGD_JPY)}</strong> 円</span>
+      <span style="color:var(--ink-faint)">${fmt} 更新</span>`;
+    calcFx();
+  } catch (e) {
+    ratesEl.innerHTML = `<span style="color:var(--coral);">⚠️ レート取得失敗 — オフライン時はフォールバックレートを使用中</span>`;
+    // フォールバック（固定レート）
+    fxRates.SGD_CNY = 5.38;
+    fxRates.SGD_JPY = 110.5;
+    calcFx();
+  }
+}
+
+function calcFx() {
+  const val = parseFloat(document.getElementById('fxInput').value);
+  const cnyEl = document.getElementById('fxCNY');
+  const jpyEl = document.getElementById('fxJPY');
+  if (isNaN(val) || val === 0 || !fxRates.SGD_CNY) {
+    cnyEl.textContent = '—';
+    jpyEl.textContent = '—';
+    return;
+  }
+  cnyEl.textContent = '¥ ' + (val * fxRates.SGD_CNY).toLocaleString('zh-CN', {minimumFractionDigits:2, maximumFractionDigits:2});
+  jpyEl.textContent = '¥ ' + Math.round(val * fxRates.SGD_JPY).toLocaleString('ja-JP');
+}
+
+// ============================================================
+// BOOT
+// ============================================================
+document.addEventListener('DOMContentLoaded',()=>{
+  initStorage();
+  fetchWeather();
+  fetchRates();
+});
+</script>
+</body>
+</html>
