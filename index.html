@@ -863,28 +863,49 @@ let fxRates = { SGD_CNY: null, SGD_JPY: null, updatedAt: null };
 async function fetchRates() {
   const ratesEl = document.getElementById('fxRates');
   ratesEl.innerHTML = '<span class="fx-loading-msg">レートを取得中...</span>';
-  try {
-    // Frankfurter: SGDを基準にCNY・JPYを取得
-    const res = await fetch('https://api.frankfurter.app/latest?from=SGD&to=CNY,JPY');
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    const data = await res.json();
-    fxRates.SGD_CNY = data.rates.CNY;
-    fxRates.SGD_JPY = data.rates.JPY;
-    fxRates.updatedAt = data.date;
-    const now = new Date();
-    const fmt = `${now.getMonth()+1}/${now.getDate()} ${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`;
-    ratesEl.innerHTML = `
-      <span>1 S$ = <strong>${fxRates.SGD_CNY.toFixed(4)}</strong> 元</span>
-      <span>1 S$ = <strong>${Math.round(fxRates.SGD_JPY)}</strong> 円</span>
-      <span style="color:var(--ink-faint)">${fmt} 更新</span>`;
-    calcFx();
-  } catch (e) {
-    ratesEl.innerHTML = `<span style="color:var(--coral);">⚠️ レート取得失敗 — オフライン時はフォールバックレートを使用中</span>`;
-    // フォールバック（固定レート）
-    fxRates.SGD_CNY = 5.38;
-    fxRates.SGD_JPY = 110.5;
-    calcFx();
+
+  // 試すAPIのリスト（順番に試してどれかが成功したら使う）
+  const apis = [
+    {
+      url: 'https://open.er-api.com/v6/latest/SGD',
+      parse: d => ({ cny: d.rates.CNY, jpy: d.rates.JPY, date: d.time_last_update_utc ? new Date(d.time_last_update_utc).toLocaleDateString('ja-JP') : '—' })
+    },
+    {
+      url: 'https://api.frankfurter.app/latest?from=SGD&to=CNY,JPY',
+      parse: d => ({ cny: d.rates.CNY, jpy: d.rates.JPY, date: d.date })
+    },
+    {
+      url: 'https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/sgd.json',
+      parse: d => ({ cny: d.sgd.cny, jpy: d.sgd.jpy, date: '最新' })
+    }
+  ];
+
+  for (const api of apis) {
+    try {
+      const res = await fetch(api.url);
+      if (!res.ok) continue;
+      const data = await res.json();
+      const r = api.parse(data);
+      if (!r.cny || !r.jpy) continue;
+      fxRates.SGD_CNY = r.cny;
+      fxRates.SGD_JPY = r.jpy;
+      const now = new Date();
+      const fmt = `${now.getMonth()+1}/${now.getDate()} ${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`;
+      ratesEl.innerHTML = `
+        <span>1 S$ = <strong>${fxRates.SGD_CNY.toFixed(4)}</strong> 元</span>
+        <span>1 S$ = <strong>${Math.round(fxRates.SGD_JPY)}</strong> 円</span>
+        <span style="color:var(--ink-faint)">${fmt} 更新</span>`;
+      calcFx();
+      return;
+    } catch (e) { continue; }
   }
+
+  // 全API失敗時のフォールバック
+  ratesEl.innerHTML = `<span style="color:var(--coral);">⚠️ レート取得失敗 — 推定レートを使用中</span>`;
+  fxRates.SGD_CNY = 5.38;
+  fxRates.SGD_JPY = 110.5;
+  calcFx();
+}
 }
 
 function calcFx() {
