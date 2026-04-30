@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>シンガポール家族旅行 2026年5月 ― 浅野家</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #FAF7F2;
+    --warm-white: #FFFDF9;
+    --sand: #E8DFD0;
+    --gold: #C9973A;
+    --gold-light: #F5E6C8;
+    --teal: #2A7B6F;
+    --teal-light: #E0F0EE;
+    --coral: #D4614A;
+    --coral-light: #FAE8E4;
+    --ink: #1A1814;
+    --ink-mid: #4A4540;
+    --ink-light: #7A746E;
+    --ink-faint: #B0AAA4;
+    --border: #DDD6CC;
+    --day1: #1A5E8A; --day1-l: #E5F0F8;
+    --day2: #2A7B6F; --day2-l: #E0F0EE;
+    --day3: #8A3A2A; --day3-l: #F8EAE6;
+    --day4: #2A6B3A; --day4-l: #E0EEE3;
+    --day5: #8A6A1A; --day5-l: #F8F0DC;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    background: var(--ink);
+    color: var(--warm-white);
+    padding: 56px 24px 44px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 30% 60%, rgba(42,123,111,.35) 0%, transparent 60%),
+                radial-gradient(ellipse at 75% 30%, rgba(201,151,58,.2) 0%, transparent 55%);
+    pointer-events: none;
+  }
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 18px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 7vw, 48px);
+    font-weight: 600;
+    line-height: 1.15;
+    margin-bottom: 8px;
+    position: relative;
+  }
+  .hero-sub {
+    font-size: 14px;
+    color: rgba(255,255,255,.6);
+    margin-bottom: 28px;
+    letter-spacing: .04em;
+  }
+  .hero-pills {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    position: relative;
+  }
+  .hero-pill {
+    background: rgba(255,255,255,.1);
+    border: 0.5px solid rgba(255,255,255,.2);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 12px;
+    color: rgba(255,255,255,.85);
+  }
+  .hero-pill.gold { background: rgba(201,151,58,.25); border-color: rgba(201,151,58,.4); color: #F5D98B; }
+
+  /* ===== CONTAINER ===== */
+  .container { max-width: 720px; margin: 0 auto; padding: 0 20px; }
+  section { margin: 36px 0; }
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  /* ===== FLIGHTS ===== */
+  .flight-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .flight-card {
+    background: var(--warm-white);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+  }
+  .flight-dir { font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: var(--ink-faint); margin-bottom: 6px; }
+  .flight-route { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--ink); margin-bottom: 4px; }
+  .flight-info { font-size: 12px; color: var(--ink-mid); line-height: 1.6; }
+  .flight-num { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--gold); font-weight: 500; margin-top: 6px; }
+
+  /* ===== HOTEL ===== */
+  .hotel-card {
+    background: var(--warm-white);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .hotel-icon {
+    width: 44px; height: 44px;
+    background: var(--gold-light);
+    border-radius: var(--radius-sm);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; flex-shrink: 0;
+  }
+  .hotel-name { font-size: 14px; font-weight: 700; color: var(--ink); }
+  .hotel-detail { font-size: 12px; color: var(--ink-mid); margin-top: 4px; line-height: 1.6; }
+  .badge {
+    display: inline-block;
+    font-size: 10px; font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-left: 5px;
+    vertical-align: middle;
+  }
+  .bg { background: var(--teal-light); color: var(--teal); }
+  .ba { background: var(--gold-light); color: #8A6010; }
+  .bb { background: #E3EDF8; color: #1A5E8A; }
+  .br { background: var(--coral-light); color: var(--coral); }
+
+  /* ===== MAP ===== */
+  .map-wrap {
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 0.5px solid var(--border);
+    position: relative;
+  }
+  .map-wrap iframe { display: block; width: 100%; border: none; }
+  .map-note {
+    background: var(--warm-white);
+    border-top: 0.5px solid var(--border);
+    padding: 10px 14px;
+    font-size: 11.5px;
+    color: var(--ink-light);
+  }
+
+  /* ===== SPOT GRID ===== */
+  .spot-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 8px;
+  }
+  .spot-card {
+    background: var(--warm-white);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    transition: box-shadow .15s, border-color .15s;
+  }
+  .spot-card:hover { border-color: var(--gold); box-shadow: 0 2px 12px rgba(0,0,0,.07); }
+  .spot-day { font-size: 10px; font-family: 'DM Mono', monospace; color: var(--ink-faint); margin-bottom: 4px; }
+  .spot-name { font-size: 13px; font-weight: 500; color: var(--ink); }
+  .spot-note { font-size: 11px; color: var(--ink-light); margin-top: 3px; line-height: 1.5; }
+  .spot-maps { font-size: 11px; color: var(--teal); margin-top: 6px; text-decoration: none; font-weight: 500; }
+
+  /* ===== DAYS ===== */
+  .day-card {
+    background: var(--warm-white);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+  .day-header {
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .day-header:hover { background: #F5F1EC; }
+  .day-num {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 15px; font-weight: 600;
+    flex-shrink: 0;
+  }
+  .day-title { flex: 1; }
+  .day-title h2 { font-size: 14px; font-weight: 700; color: var(--ink); }
+  .day-title p { font-size: 12px; color: var(--ink-light); margin-top: 1px; }
+  .day-chev { color: var(--ink-faint); font-size: 12px; transition: transform .2s; }
+  .day-chev.open { transform: rotate(180deg); }
+  .day-body { display: none; border-top: 0.5px solid var(--border); padding: 16px 20px; }
+  .day-body.open { display: block; }
+
+  /* ===== TIMELINE ===== */
+  .tl { list-style: none; }
+  .ti { display: flex; gap: 12px; }
+  .ti:last-child .tl-ln { display: none; }
+  .tl-l { display: flex; flex-direction: column; align-items: center; width: 48px; flex-shrink: 0; }
+  .tl-t { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--ink-faint); white-space: nowrap; padding-top: 2px; }
+  .tl-d { width: 8px; height: 8px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
+  .tl-ln { width: 1px; background: var(--border); flex: 1; margin-top: 3px; min-height: 24px; }
+  .tc { padding-bottom: 18px; flex: 1; min-width: 0; }
+  .tc h3 { font-size: 13px; font-weight: 700; color: var(--ink); line-height: 1.4; }
+  .tc p { font-size: 12px; color: var(--ink-mid); margin-top: 3px; line-height: 1.6; }
+  .tc a { color: var(--teal); text-decoration: none; font-weight: 500; }
+  .tc a:hover { text-decoration: underline; }
+  .callout {
+    margin-top: 8px;
+    border-radius: var(--radius-sm);
+    padding: 9px 12px;
+    font-size: 11.5px;
+    line-height: 1.5;
+    display: flex;
+    gap: 7px;
+  }
+  .cg { background: var(--teal-light); color: var(--teal); }
+  .ca { background: var(--gold-light); color: #8A6010; }
+  .cb { background: #E3EDF8; color: #1A5E8A; }
+
+  /* ===== BENEFITS ===== */
+  .benefit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .benefit-card {
+    background: var(--warm-white);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+  }
+  .benefit-card h3 { font-size: 12.5px; font-weight: 700; color: var(--ink); margin-bottom: 6px; }
+  .benefit-card ul { list-style: none; }
+  .benefit-card li { font-size: 12px; color: var(--ink-mid); line-height: 1.6; padding-left: 12px; position: relative; }
+  .benefit-card li::before { content: '·'; position: absolute; left: 2px; color: var(--gold); font-weight: 700; }
+
+  /* ===== CHECKLIST ===== */
+  .checklist-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .cl-item {
+    background: var(--warm-white);
+    border: 0.5px solid var(--border);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: 12px 14px;
+  }
+  .cl-item h3 { font-size: 12px; font-weight: 700; color: var(--ink); }
+  .cl-item p { font-size: 11px; color: var(--ink-mid); margin-top: 3px; line-height: 1.5; }
+
+  /* ===== FOOTER ===== */
+  footer {
+    background: var(--ink);
+    color: rgba(255,255,255,.45);
+    text-align: center;
+    padding: 28px 20px;
+    font-size: 11px;
+    letter-spacing: .05em;
+    margin-top: 48px;
+  }
+  footer span { color: var(--gold); }
+
+  /* ===== NAV ===== */
+  .sticky-nav {
+    position: sticky;
+    top: 0;
+    background: rgba(26,24,20,.95);
+    backdrop-filter: blur(8px);
+    z-index: 100;
+    padding: 10px 20px;
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    border-bottom: 0.5px solid rgba(255,255,255,.08);
+  }
+  .sticky-nav::-webkit-scrollbar { display: none; }
+  .nav-btn {
+    flex-shrink: 0;
+    background: rgba(255,255,255,.07);
+    border: 0.5px solid rgba(255,255,255,.12);
+    border-radius: 20px;
+    padding: 5px 13px;
+    font-size: 11.5px;
+    color: rgba(255,255,255,.7);
+    text-decoration: none;
+    font-family: 'Noto Sans JP', sans-serif;
+    transition: background .15s;
+    white-space: nowrap;
+  }
+  .nav-btn:hover { background: rgba(201,151,58,.3); color: #F5D98B; }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 540px) {
+    .flight-grid { grid-template-columns: 1fr; }
+    .benefit-grid { grid-template-columns: 1fr; }
+    .checklist-grid { grid-template-columns: 1fr; }
+    .spot-grid { grid-template-columns: 1fr 1fr; }
+    .hero h1 { font-size: 26px; }
+    .hotel-card { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">Family Travel Guide · 2026</div>
+  <h1>シンガポール<br>家族旅行</h1>
+  <div class="hero-sub">浅野明 · 王思思 · 浅野レイ（6歳）</div>
+  <div class="hero-pills">
+    <span class="hero-pill">📅 2026年5月3〜7日（5日間）</span>
+    <span class="hero-pill gold">🏨 JW Marriott South Beach</span>
+    <span class="hero-pill">✈ SQ827 / SQ826</span>
+    <span class="hero-pill">👨‍👩‍👧 大人2名 · 子供1名</span>
+  </div>
+</div>
+
+<!-- STICKY NAV -->
+<nav class="sticky-nav">
+  <a class="nav-btn" href="#flights">フライト</a>
+  <a class="nav-btn" href="#hotel">ホテル</a>
+  <a class="nav-btn" href="#map">地図</a>
+  <a class="nav-btn" href="#day1">Day 1</a>
+  <a class="nav-btn" href="#day2">Day 2</a>
+  <a class="nav-btn" href="#day3">Day 3</a>
+  <a class="nav-btn" href="#day4">Day 4</a>
+  <a class="nav-btn" href="#day5">Day 5</a>
+  <a class="nav-btn" href="#benefits">特典</a>
+  <a class="nav-btn" href="#checklist">チェックリスト</a>
+</nav>
+
+<div class="container">
+
+  <!-- FLIGHTS -->
+  <section id="flights">
+    <div class="section-label">✈ フライト情報</div>
+    <div class="flight-grid">
+      <div class="flight-card">
+        <div class="flight-dir">往路</div>
+        <div class="flight-route">PVG → SIN</div>
+        <div class="flight-info">
+          5月3日（日）<br>
+          08:05 出発 → 13:25 到着<br>
+          チャンギ空港 T3<br>
+          エコノミー(W) · 受託手荷物 30kg
+        </div>
+        <div class="flight-num">SQ827 · A350-900 · 予約番号: DYPF2I</div>
+      </div>
+      <div class="flight-card">
+        <div class="flight-dir">復路（深夜便）</div>
+        <div class="flight-route">SIN → PVG</div>
+        <div class="flight-info">
+          5月8日（金）<br>
+          01:15 出発 → 06:35 到着<br>
+          チャンギ空港 T3<br>
+          エコノミー(M) · 受託手荷物 30kg
+        </div>
+        <div class="flight-num">SQ826 · A350-900</div>
+      </div>
+    </div>
+    <div style="background:var(--gold-light);border-radius:var(--radius-sm);padding:11px 14px;margin-top:10px;font-size:12px;color:#7A5800;border:0.5px solid #D4B060;">
+      ⚠️ <strong>SQ826は深夜01:15発。</strong> 5月7日（木）の夜にJewel Changを「早期手荷物預け」して身軽に最終夕食を楽しみ、21:00頃に出国するのがベストプラン。
+    </div>
+  </section>
+
+  <!-- HOTEL -->
+  <section id="hotel">
+    <div class="section-label">🏨 ホテル</div>
+    <div class="hotel-card">
+      <div class="hotel-icon">🏨</div>
+      <div>
+        <div class="hotel-name">JW Marriott Hotel Singapore South Beach<span class="badge bg">Platinum Elite</span></div>
+        <div class="hotel-detail">
+          📍 30 Beach Road, Singapore<br>
+          チェックイン: 5月3日（日）15:00 / チェックアウト: 5月7日（木）<strong style="color:var(--teal);">16:00</strong>（Platinum特典）<br>
+          1 King Bed · Premier Guest Room · 4泊 · S$2,411.20<br>
+          確認番号: <span style="font-family:'DM Mono',monospace;">#93479246</span>
+        </div>
+        <div style="margin-top:8px;">
+          <a href="https://maps.google.com/?cid=10696474480720568431" target="_blank" style="font-size:12px;color:var(--teal);text-decoration:none;font-weight:500;">📍 Googleマップで見る →</a>
+        </div>
+      </div>
+    </div>
+    <div style="background:var(--teal-light);border-radius:var(--radius-sm);padding:11px 14px;margin-top:10px;font-size:12px;color:var(--teal);border:0.5px solid #90C8C0;">
+      ✅ <strong>Platinum Elite特典（チェックイン時に確認を）：</strong>①ウェルカムギフト（1,000ポイント or 朝食クレジット） ②スイートへのアップグレード申請（空室次第） ③16:00レイトチェックアウト ④50%ボーナスポイント
+    </div>
+  </section>
+
+  <!-- MAP -->
+  <section id="map">
+    <div class="section-label">🗺 主要スポット マップ</div>
+    <div class="map-wrap">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m56!1m12!1m3!1d127639.30082095408!2d103.77580!3d1.3177!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m41!3e0!4m5!1s0x31da19a24ba98bb5%3A0x946271cead61417e!2sJW%20Marriott%20Hotel%20Singapore%20South%20Beach!3m2!1d1.2944688!2d103.8557929!4m5!1s0x31da19f69def58a4%3A0x4c73f9d01a81d36e!2sGardens%20by%20the%20Bay!3m2!1d1.2815683!2d103.8636132!4m5!1s0x31da19df5ecb41e5%3A0x4bbb48fd6e0bd98a!2sUniversal%20Studios%20Singapore!3m2!1d1.2540421!2d103.82380839999999!4m5!1s0x31da20ca117ce42b%3A0xb5f61af9c8c91411!2sSingapore%20Zoo!3m2!1d1.4043485!2d103.79302299999999!4m5!1s0x31da19064a59f76f%3A0xac72e30219ab1d20!2sLau%20Pa%20Sat!3m2!1d1.2805121!2d103.8503809!4m5!1s0x31da18b7e39c1b7f%3A0xb76ae9ac0789a3e9!2sJewel%20Changi%20Airport!3m2!1d1.3602094!2d103.9897598!5e0!3m2!1sja!2sjp!4v1714000000000!5m2!1sja!2sjp"
+        height="400"
+        style="border:0;"
+        allowfullscreen=""
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+      <div class="map-note">📍 タップ・クリックすると各スポットをGoogleマップで開けます</div>
+    </div>
+    <div style="margin-top:14px;">
+      <div class="section-label" style="margin-bottom:10px;">各スポットへのリンク</div>
+      <div class="spot-grid">
+        <a class="spot-card" href="https://maps.google.com/?cid=10696474480720568431" target="_blank">
+          <div class="spot-day">ホテル</div>
+          <div class="spot-name">🏨 JW Marriott South Beach</div>
+          <div class="spot-note">30 Beach Road</div>
+          <div class="spot-maps">Googleマップ →</div>
+        </a>
+        <a class="spot-card" href="https://maps.google.com/?cid=7398674140980442023" target="_blank">
+          <div class="spot-day">Day 1</div>
+          <div class="spot-name">🦁 マーライオン公園</div>
+          <div class="spot-note">1 Fullerton Rd</div>
+          <div class="spot-maps">Googleマップ →</div>
+        </a>
+        <a class="spot-card" href="https://maps.google.com/?cid=18296669017417104736" target="_blank">
+          <div class="spot-day">Day 1 🍽️</div>
+          <div class="spot-name">🍢 ラウ・パ・サット</div>
+          <div class="spot-note">18 Raffles Quay</div>
+          <div class="spot-maps">Googleマップ →</div>
+        </a>
+        <a class="spot-card" href="https://maps.google.com/?cid=8374539842675743178" target="_blank">
+          <div class="spot-day">Day 2 ⚡最優先</div>
+          <div class="spot-name">⭐ Sands Lifestyleカウンター</div>
+          <div class="spot-note">MBS The Shoppes B1</div>
+          <div class="spot-maps">Googleマップ →</div>
+        </a>
+        <a class="spot-card" href="https://maps.google.com/?cid=588707449624412211" target="_blank">
+          <div class="spot-day">Day 2 無料✨</div>
+          <div class="spot-name">🏙️ スカイパーク展望デッキ</div>
+          <div class="spot-note">Marina Bay Sands, Tower 3</div>
+          <div class="spot-maps">Googleマップ →</div>
+        </a>
+        <a class="spot-card" href="https://maps.google.com/?cid=7064342931399756406" target="_blank">
+          <div class="spot-day">Day 2</div>
+          <div class="spot-name">🌿 ガーデンズ・バイ・ザ・ベイ</div>
+          <div class="spot-note">18 Marina Gardens Dr</div>
+          <div class="spot-maps">Googleマップ →</div>
+        </a>
+        <a class="spot-card" href="http://sataybythebay.com.sg/" target="_blank">
+          <div class="spot-day">Day 2 🍽️</div>
+          <div class="spot-name">🍢 Satay by the Bay</div>
+          <div class="spot-note">Gardens by the Bay内</div>
+          <div class="spot-maps">公式サイト →</div>
+        </a>
+        <a class="spot-card" href="https://maps.google.com/?cid=3500426646667023007" target="_blank">
+          <div class="spot-day">Day 3 🎢</div>
+          <div class="spot-name">🎡 ユニバーサル・スタジオ</div>
+          <div class="spot-note">8 Sentosa Gateway</div>
+          <div class="spot-maps">Googleマップ →</div>
+        </a>
+        <a class="spot-card" href="https://maps.google.com/?cid=12450201583291173640" target="_blank">
+          <div class="spot-day">Day 3 🍽️</div>
+          <div class="spot-name">🍷 クラーク・キー</div>
+          <div class="spot-note">Clarke Quay, Singapore</div>
+          <div class="spot-maps">Googleマップ →</div>
+        </a>
+        <a class="spot-card" href="https://maps.google.com/?cid=12976272166016981905" target="_blank">
+          <div class="spot-day">Day 4 🐘</div>
+          <div class="spot-name">🦁 シンガポール動物園</div>
+          <div class="spot-note">80 Mandai Lake Rd</div>
+          <div class="spot-maps">Googleマップ →</div>
+        </a>
+        <a class="spot-card" href="https://maps.google.com/?cid=558626411650668203" target="_blank">
+          <div class="spot-day">Day 4 🍽️</div>
+          <div class="spot-name">🥢 チャイナタウン・フードSt</div>
+          <div class="spot-note">41 Smith St</div>
+          <div class="spot-maps">Googleマップ →</div>
+        </a>
+        <a class="spot-card" href="https://maps.google.com/?cid=13261360313192835779" target="_blank">
+          <div class="spot-day">Day 5 🧳最終日</div>
+          <div class="spot-name">💧 Jewel Changi Airport</div>
+          <div class="spot-note">早期手荷物 / 最終夕食 / 滝</div>
+          <div class="spot-maps">Googleマップ →</div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- DAY-BY-DAY -->
+  <section id="itinerary">
+    <div class="section-label">📅 日程詳細</div>
+
+    <!-- Day 1 -->
+    <div class="day-card" id="day1">
+      <div class="day-header" onclick="tog(this)">
+        <div class="day-num" style="background:var(--day1-l);color:var(--day1);">1</div>
+        <div class="day-title">
+          <h2>Day 1 · 5月3日（日） — 到着 &amp; マリーナベイの夜</h2>
+          <p>SQ827 上海出発 → チャンギ着 → ホテル → マーライオン → ラウ・パ・サット</p>
+        </div>
+        <span class="day-chev open">▼</span>
+      </div>
+      <div class="day-body open">
+        <ul class="tl">
+          <li class="ti"><div class="tl-l"><span class="tl-t">08:05</span><div class="tl-d" style="background:var(--day1);"></div><div class="tl-ln"></div></div><div class="tc"><h3>上海浦東（PVG）出発 <span class="badge bb">SQ827</span></h3><p>搭乗手続きは出発90分前を目安に。機内でKrisFlyerマイル1,773マイル積算予定。</p></div></li>
+          <li class="ti"><div class="tl-l"><span class="tl-t">13:25</span><div class="tl-d" style="background:var(--day1);"></div><div class="tl-ln"></div></div><div class="tc"><h3>チャンギ空港 T3 到着</h3><p>入国審査・受託手荷物受取。KrisFlyer Elite Silverで優先取り扱い。タクシーでホテルへ約40分（S$25〜35）。</p></div></li>
+          <li class="ti"><div class="tl-l"><span class="tl-t">15:00</span><div class="tl-d" style="background:var(--day2);"></div><div class="tl-ln"></div></div><div class="tc"><h3>JW Marriott チェックイン <span class="badge bg">Platinum特典あり</span></h3><p>フロントで「Platinum Elite」と伝え：①ウェルカムギフト選択 ②スイートアップグレード申請 ③KrisFlyer or Marriottポイントどちらで積算か選択。</p></div></li>
+          <li class="ti"><div class="tl-l"><span class="tl-t">16:30</span><div class="tl-d" style="background:#AAA;"></div><div class="tl-ln"></div></div><div class="tc"><h3>マーライオン公園 &amp; マリーナベイ散策</h3><p>ホテルから徒歩15分。夕暮れのマリーナベイは絶景。レイちゃんの記念写真を。</p><div class="tc"><a href="https://maps.google.com/?cid=7398674140980442023" target="_blank">📍 Googleマップ →</a></div></div></li>
+          <li class="ti"><div class="tl-l"><span class="tl-t">18:00</span><div class="tl-d" style="background:var(--gold);"></div><div class="tl-ln"></div></div><div class="tc"><h3>🍽️ 夕食 — ラウ・パ・サット（Lau Pa Sat）</h3><p>ホーカーセンター。サテー通り・チキンライス・ラクサ。<strong>Kris+アプリで決済してマイル獲得。</strong></p><a href="https://maps.google.com/?cid=18296669017417104736" target="_blank">📍 Googleマップ →</a></div></li>
+          <li class="ti"><div class="tl-l"><span class="tl-t">20:00</span><div class="tl-d" style="background:#AAA;"></div></div><div class="tc"><h3>ホテルに帰着・就寝</h3><p>翌日はMBSで特典手続きが最優先。早めに休む。</p></div></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Day 2 -->
+    <div class="day-card" id="day2">
+      <div class="day-header" onclick="tog(this)">
+        <div class="day-num" style="background:var(--day2-l);color:var(--day2);">2</div>
+        <div class="day-title">
+          <h2>Day 2 · 5月4日（月） — MBS特典 &amp; ガーデンズ</h2>
+          <p>Sands Lifestyle Prestige取得 → スカイパーク無料 → ガーデンズ・バイ・ザ・ベイ → 光のショー</p>
+        </div>
+        <span class="day-chev">▼</span>
+      </div>
+      <div class="day-body">
+        <ul class="tl">
+          <li class="ti"><div class="tl-l"><span class="tl-t">09:30</span><div class="tl-d" style="background:#AAA;"></div><div class="tl-ln"></div></div><div class="tc"><h3>ホテル朝食 → MBSへ移動</h3><p>タクシーまたは徒歩でThe Shoppes at MBSへ。到着後まずSands Lifestyleカウンターへ直行！</p></div></li>
+          <li class="ti"><div class="tl-l"><span class="tl-t">10:00</span><div class="tl-d" style="background:var(--gold);"></div><div class="tl-ln"></div></div><div class="tc"><h3>⚡ Sands Lifestyle カウンター — 楽天Prestige取得 <span class="badge ba">最優先！</span></h3><p>スタッフに「Rakuten Platinum upgrade」と伝え、<strong>楽天アプリのプラチナ画面 + パスポート</strong>を提示。カフェでS$1以上の購入後に手続き完了。場所：B1サンパンライドそば（10:30〜23:00）。</p><a href="https://maps.google.com/?cid=8374539842675743178" target="_blank">📍 カウンターの場所 →</a><div class="callout ca">⚠️ これを先に済ませるとスカイパーク入場が無料に！スカイパーク入場より先に手続き必須。</div></div></li>
+          <li class="ti"><div class="tl-l"><span class="tl-t">11:00</span><div class="tl-d" style="background:var(--day1);"></div><div class="tl-ln"></div></div><div class="tc"><h3>スカイパーク展望デッキ <span class="badge bg">楽天特典で無料</span></h3><p>通常S$26/人 × 3名 = S$78が<strong style="color:var(--teal);">無料</strong>に。カウンターで発行された無料チケットで入場。T3・56階から360度の絶景。</p><a href="https://maps.google.com/?cid=588707449624412211" target="_blank">📍 Googleマップ →</a></div></li>
+          <li class="ti"><div class="tl-l"><span class="tl-t">12:30</span><div class="tl-d" style="background:#AAA;"></div><div class="tl-ln"></div></div><div class="tc"><h3>ランチ（MBS内 or ガーデンズへ移動）</h3><p>MBS内のフードコートまたはガーデンズへ移動してから食事。Kris+で決済。</p></div></li>
+          <li class="ti"><div class="tl-l"><span class="tl-t">14:00</span><div class="tl-d" style="background:var(--day2);"></div><div class="tl-ln"></div></div><div class="tc"><h3>ガーデンズ・バイ・ザ・ベイ 🌿</h3><p>フラワードーム（世界最大の冷温温室）とクラウドフォレスト（霧の中の巨大滝）。レイちゃんが大喜びのスポット。</p><a href="https://maps.google.com/?cid=7064342931399756406" target="_blank">📍 Googleマップ →</a></div></li>
+          <li class="ti"><div class="tl-l"><span class="tl-t">18:00</span><div class="tl-d" style="background:var(--gold);"></div><div class="tl-ln"></div></div><div class="tc"><h3>🍽️ 夕食 — Satay by the Bay</h3><p>ガーデンズ内のオープンエアホーカー。スーパーツリーを眺めながら食事。Kris+で決済。</p><a href="http://sataybythebay.com.sg/" target="_blank">📍 公式サイト →</a></div></li>
+          <li class="ti"><div class="tl-l"><span class="tl-t">19:45</span><div class="tl-d" style="background:var(--day2);"></div></div><div class="tc"><h3>ガーデン・ラプソディ（光と音のショー）✨</h3><p>毎夜19:45 / 20:45の2回。<strong>無料。</strong>スーパーツリーが色とりどりの光で輝く。レイちゃんが絶対に喜ぶ！</p></div></li>
+        </ul>
+        <div style="background:var(--teal-light);border-radius:var(--radius-sm);padding:10px 13px;margin-top:8px;font-size:12px;color:var(--teal);border:0.5px solid #90C8C0;">
+          💡 Prestige取得時にサンパンライドとアートサイエンス・ミュージアムの無料チケットも同時発行。時間があれば活用を。
+        </div>
+      </div>
+    </div>
+
+    <!-- Day 3 -->
+    <div class="day-card" id="day3">
+      <div class="day-header" onclick="tog(this)">
+        <div class="day-num" style="background:var(--day3-l);color:var(--day3);">3</div>
+        <div class="day-title">
+          <h2>Day 3 · 5月5日（火） — ユニバーサル・スタジオ</h2>
+          <p>セントーサ島でテーマパーク終日 → 夕方クラーク・キーでディナー</p>
+        </div>
+        <span class="day-chev">▼</span>
+      </div>
+      <div class="day-body">
+        <ul class="tl">
+          <li class="ti"><div class="tl-l"><span class="tl-t">08:30</span><div class="tl-d" style="background:#AAA;"></div><div class="tl-ln"></div></div><div class="tc"><h3>朝食 → セントーサ島へ出発</h3><p>タクシーで約40分（S$20〜25）。混雑前に早めに向かう。</p></div></li>
+          <li class="ti"><div class="tl-l"><span class="tl-t">10:00</span><div class="tl-d" style="background:var(--day3);"></div><div class="tl-ln"></div></div><div class="tc"><h3>ユニバーサル・スタジオ・シンガポール 🎢</h3><p>開園と同時入場が鉄則。<strong>6歳のレイちゃん向けアトラクション：</strong>シュレック4-Dムービー、ライド・ツー・ザ・ムーン、ファー・ファー・アウェイ城。午前中に人気ライドを優先。</p><a href="https://maps.google.com/?cid=3500426646667023007" target="_blank">📍 Googleマップ →</a><div class="callout cb">📱 チケットはKlookまたはUSSウェブサイトで事前購入必須。当日券より安く、並び時間短縮。</div></div></li>
+          <li class="ti"><div class="tl-l"><span class="tl-t">13:00</span><div class="tl-d" style="background:#AAA;"></div><div class="tl-ln"></div></div><div class="tc"><h3>USS内でランチ</h3><p>スタープライドダイナー等で休憩。暑いのでこまめな水分補給を。</p></div></li>
+          <li class="ti"><div class="tl-l"><span class="tl-t">17:00</span><div class="tl-d" style="background:#AAA;"></div><div class="tl-ln"></div></div><div class="tc"><h3>ホテルに帰着 · シャワー</h3></div></li>
+          <li class="ti"><div class="tl-l"><span class="tl-t">18:00</span><div class="tl-d" style="background:var(--gold);"></div></div><div class="tc"><h3>🍽️ 夕食 — クラーク・キー（Clarke Quay）</h3><p>シンガポール川沿いのダイニングエリア。タイ・シーフード・和食など多様。テラス席が気持ちいい。Kris+で決済してマイル獲得。</p><a href="https://maps.google.com/?cid=12450201583291173640" target="_blank">📍 Googleマップ →</a></div></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Day 4 -->
+    <div class="day-card" id="day4">
+      <div class="day-header" onclick="tog(this)">
+        <div class="day-num" style="background:var(--day4-l);color:var(--day4);">4</div>
+        <div class="day-title">
+          <h2>Day 4 · 5月6日（水） — 動物園 &amp; チャイナタウン</h2>
+          <p>朝の動物園（Jungle Breakfast） → 午後チャイナタウンでお土産 → フードストリートで夕食</p>
+        </div>
+        <span class="day-chev">▼</span>
+      </div>
+      <div class="day-body">
+        <ul class="tl">
+          <li class="ti"><div class="tl-l"><span class="tl-t">08:00</span><div class="tl-d" style="background:#AAA;"></div><div class="tl-ln"></div></div><div class="tc"><h3>朝食 → 動物園へ出発</h3><p>タクシーで約35分（S$25〜30）。Jungle Breakfast（09:00〜10:30）は要事前予約！</p></div></li>
+          <li class="ti"><div class="tl-l"><span class="tl-t">09:00</span><div class="tl-d" style="background:var(--day4);"></div><div class="tl-ln"></div></div><div class="tc"><h3>シンガポール動物園 🐘</h3><p><strong>Jungle Breakfast with Wildlife（要事前予約）</strong>でオランウータンと一緒に朝食。オープン型の広大な動物園。ホワイトタイガー・ゾウが間近に。Splash Safari Zoneで水遊びも。</p><a href="https://maps.google.com/?cid=12976272166016981905" target="_blank">📍 Googleマップ →</a><div class="callout cg">✅ Jungle Breakfast は <a href="https://www.mandai.com/en/singapore-zoo.html" target="_blank">mandai.com</a> で事前予約を。Klookも可。大人気なので早めに！</div></div></li>
+          <li class="ti"><div class="tl-l"><span class="tl-t">13:00</span><div class="tl-d" style="background:#AAA;"></div><div class="tl-ln"></div></div><div class="tc"><h3>動物園内でランチ</h3><p>園内のレストランで休憩。</p></div></li>
+          <li class="ti"><div class="tl-l"><span class="tl-t">15:00</span><div class="tl-d" style="background:#AAA;"></div><div class="tl-ln"></div></div><div class="tc"><h3>チャイナタウンへ移動 &amp; お土産探し</h3><p>パゴダ・ストリート・スミス・ストリートでお菓子・雑貨・お土産。仏牙寺観光も。Kris+提携店での支払いでマイル獲得。</p></div></li>
+          <li class="ti"><div class="tl-l"><span class="tl-t">17:00</span><div class="tl-d" style="background:#AAA;"></div><div class="tl-ln"></div></div><div class="tc"><h3>ホテル帰着 · 休憩 · 荷物整理開始</h3></div></li>
+          <li class="ti"><div class="tl-l"><span class="tl-t">18:00</span><div class="tl-d" style="background:var(--gold);"></div></div><div class="tc"><h3>🍽️ 夕食 — チャイナタウン・フードストリート</h3><p>バクテー・チキンライス・チリクラブなどシンガポールのソウルフードが勢揃い。Kris+で決済。</p><a href="https://maps.google.com/?cid=558626411650668203" target="_blank">📍 Googleマップ →</a></div></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Day 5 -->
+    <div class="day-card" id="day5">
+      <div class="day-header" onclick="tog(this)">
+        <div class="day-num" style="background:var(--day5-l);color:var(--day5);">5</div>
+        <div class="day-title">
+          <h2>Day 5 · 5月7日（木） — チェックアウト &amp; Jewel → 深夜出発</h2>
+          <p>Platinum 16:00 C/O → Jewel Changi 早期手荷物預け → 最終夕食 → SQ826 01:15発</p>
+        </div>
+        <span class="day-chev">▼</span>
+      </div>
+      <div class="day-body">
+        <ul class="tl">
+          <li class="ti"><div class="tl-l"><span class="tl-t">09:00</span><div class="tl-d" style="background:#AAA;"></div><div class="tl-ln"></div></div><div class="tc"><h3>ホテルで最後の朝食</h3><p>ゆっくり楽しむ。荷物は部屋でまとめておく。<br><strong>※ SQ826のオンラインチェックインをSingaporeAirアプリで済ませておく（48時間前から可）。</strong></p></div></li>
+          <li class="ti"><div class="tl-l"><span class="tl-t">10:00</span><div class="tl-d" style="background:#AAA;"></div><div class="tl-ln"></div></div><div class="tc"><h3>オーチャード・ロード（自由時間）</h3><p>ION Orchard・Takashimaya・Bengawan Soloなどでお土産の追加購入。Kris+でマイル積み上げ。</p></div></li>
+          <li class="ti"><div class="tl-l"><span class="tl-t">16:00</span><div class="tl-d" style="background:var(--day2);"></div><div class="tl-ln"></div></div><div class="tc"><h3>チェックアウト 16:00 <span class="badge bg">Platinum特典</span></h3><p>通常12:00 → Platinum Elite特典で<strong>16:00</strong>まで延長。余裕をもって最終準備。Grabタクシーを呼ぶ。</p></div></li>
+          <li class="ti"><div class="tl-l"><span class="tl-t">17:00</span><div class="tl-d" style="background:var(--day1);"></div><div class="tl-ln"></div></div><div class="tc"><h3>Jewel Changi Airport 到着 → 早期手荷物預け <span class="badge bb">重要</span></h3><p>Level 1の早期チェックインカウンターで荷物を預ける（<strong>締め切り22:15</strong>）。身軽になって探索開始！</p><a href="https://maps.google.com/?cid=13261360313192835779" target="_blank">📍 Googleマップ →</a><div class="callout cb">✈️ チェックインはアプリ済。ここでは荷物ドロップのみ。完了後はJewelを自由に楽しめる。</div></div></li>
+          <li class="ti"><div class="tl-l"><span class="tl-t">17:30</span><div class="tl-d" style="background:var(--day2);"></div><div class="tl-ln"></div></div><div class="tc"><h3>HSBC Rain Vortex（屋内滝）見学 💧</h3><p>世界最大の屋内滝。Shiseido Forest Valleyの緑も美しい。レイちゃんへの最後のサプライズ！Changi Rewardsに登録して空港内ショッピングでもマイル獲得可。</p></div></li>
+          <li class="ti"><div class="tl-l"><span class="tl-t">18:00</span><div class="tl-d" style="background:var(--gold);"></div><div class="tl-ln"></div></div><div class="tc"><h3>🍽️ 最終夕食 — Jewel内レストラン</h3><p>Shake Shack・Tim Ho Wan（飲茶）・A&amp;W・Bengawan Solo（スイーツ）など。Kris+で旅行最後のマイルも獲得。</p></div></li>
+          <li class="ti"><div class="tl-l"><span class="tl-t">21:00</span><div class="tl-d" style="background:var(--day1);"></div><div class="tl-ln"></div></div><div class="tc"><h3>出国審査 → 搭乗ゲートへ（T3）</h3><p>手荷物預け済み・チェックイン済みなので出国審査へ直行。KrisFlyer Elite Silver Gold Trackでセキュリティ優先通過。ゲートで仮眠を。</p></div></li>
+          <li class="ti"><div class="tl-l"><span class="tl-t">01:15</span><div class="tl-d" style="background:var(--day1);"></div></div><div class="tc"><h3>SQ826 シンガポール出発 ✈ → 上海へ <span class="badge bb">5月8日（金）</span></h3><p>06:35 上海浦東着。レイちゃんは機内でぐっすり。フライト中もマイル1,773積算。</p></div></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- BENEFITS -->
+  <section id="benefits">
+    <div class="section-label">🎁 会員特典まとめ</div>
+    <div class="benefit-grid">
+      <div class="benefit-card">
+        <h3>🏨 Marriott Bonvoy Platinum Elite</h3>
+        <ul>
+          <li>チェックアウト 16:00（通常12:00）</li>
+          <li>ウェルカムギフト（1,000pt or F&B）</li>
+          <li>スイートへのアップグレード申請</li>
+          <li>50%ボーナスポイント加算</li>
+          <li>MarriottポイントをKrisFlyerマイルに3:1で交換可</li>
+        </ul>
+      </div>
+      <div class="benefit-card">
+        <h3>🎰 楽天プラチナ × MBS</h3>
+        <ul>
+          <li>Sands Lifestyle Prestige 3ヶ月無料昇格</li>
+          <li>スカイパーク展望デッキ 無料（S$26/人）</li>
+          <li>アートサイエンス・ミュージアム 無料</li>
+          <li>サンパンライド（運河ボート）無料</li>
+          <li>250以上の店舗で最大20%リゾートドル還元</li>
+        </ul>
+      </div>
+      <div class="benefit-card">
+        <h3>✈ KrisFlyer × Kris+アプリ</h3>
+        <ul>
+          <li>Elite Silver：優先搭乗・優先手荷物取扱</li>
+          <li>Elite Silver：無料標準座席選択（エコノミー）</li>
+          <li>Kris+：シンガポール1,700以上の店で最大6マイル/SGD</li>
+          <li>Chopeで予約するたびに100マイル</li>
+          <li>KrisShop事前注文で免税価格購入</li>
+          <li>Changi Rewardsと連携でマイル交換</li>
+        </ul>
+      </div>
+      <div class="benefit-card">
+        <h3>🔗 Marriott × KrisFlyer 連携特典</h3>
+        <ul>
+          <li>KrisFlyer Elite Silver 12ヶ月延長</li>
+          <li>MarriottポイントをKrisFlyerに3:1で交換</li>
+          <li>KrisFlyerマイルをMarriottに4:3で交換可（年間最大250,000マイル）</li>
+          <li>ホテル滞在でポイントかマイルを選択積算</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHECKLIST -->
+  <section id="checklist">
+    <div class="section-label">✅ 渡航前チェックリスト</div>
+    <div class="checklist-grid">
+      <div class="cl-item">
+        <h3>📱 Kris+アプリ</h3>
+        <p>インストール・KrisFlyer番号登録・自動転送機能をONにする</p>
+      </div>
+      <div class="cl-item">
+        <h3>🎢 USSチケット</h3>
+        <p><a href="https://www.rwsentosa.com/en/play/universal-studios-singapore" target="_blank" style="color:var(--teal);">Klookまたは公式</a>で事前購入（日付指定）</p>
+      </div>
+      <div class="cl-item">
+        <h3>🦁 Jungle Breakfast</h3>
+        <p><a href="https://www.mandai.com/en/singapore-zoo.html" target="_blank" style="color:var(--teal);">動物園公式サイト</a>で要事前予約（09:00〜）</p>
+      </div>
+      <div class="cl-item">
+        <h3>✈ SQ826 オンラインCI</h3>
+        <p>5月6日01:15以降にSingaporeAirアプリでチェックイン完了</p>
+      </div>
+      <div class="cl-item">
+        <h3>🏨 MBS Sands Lifestyle</h3>
+        <p><a href="https://jp.marinabaysands.com/sands-lifestyle/new-member.html" target="_blank" style="color:var(--teal);">事前オンライン登録</a>で当日カウンター手続きがスムーズに</p>
+      </div>
+      <div class="cl-item">
+        <h3>🗺 Grabアプリ</html>
+        <p>シンガポールの配車アプリ。タクシーより安い。事前にインストールしてカード登録を</p>
+      </div>
+      <div class="cl-item">
+        <h3>💊 子供用常備薬</h3>
+        <p>解熱剤・酔い止め・絆創膏など。シンガポールは薬局は多いが日本語は通じない</p>
+      </div>
+      <div class="cl-item">
+        <h3>💦 熱中症対策</h3>
+        <p>常時30℃以上。日焼け止め・飲料水・帽子・ポータブル扇風機を忘れずに</p>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /container -->
+
+<footer>
+  <div style="margin-bottom:8px;font-family:'Playfair Display',serif;font-size:16px;color:rgba(255,255,255,.7);font-style:italic;">Have a wonderful trip ✈</div>
+  浅野家 シンガポール旅行 · 2026年5月3〜7日<br>
+  作成日: <span>2026年4月18日</span> · JW Marriott <span>#93479246</span> · SQ827 / SQ826 <span>DYPF2I</span>
+</footer>
+
+<script>
+function tog(hd) {
+  const body = hd.nextElementSibling;
+  const chev = hd.querySelector('.day-chev');
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  chev.classList.toggle('open', !isOpen);
+}
+// Auto-open day 1 on load (already done via class)
+</script>
+</body>
+</html>
