@@ -699,7 +699,7 @@ function initStorage(){
       fbDb.ref(DB_PATH).on('value',snap=>{
         const val=snap.val();
         if(!val||!val.initialized){fbDb.ref(DB_PATH).set(clone(DEFAULT_DATA));}
-        else{appData=val;renderAll();showSync('🔄 同期完了');}
+        else{appData=repairData(val);renderAll();showSync('🔄 同期完了');}
       },err=>{console.warn('Firebase error:',err);loadLocal();});
     }catch(e){console.warn('Firebase init error:',e);loadLocal();}
   }else{
@@ -708,9 +708,42 @@ function initStorage(){
   }
 }
 function loadLocal(){
-  const s=localStorage.getItem(DB_PATH);
-  appData=s?JSON.parse(s):clone(DEFAULT_DATA);
+  try {
+    const s = localStorage.getItem(DB_PATH);
+    appData = s ? JSON.parse(s) : clone(DEFAULT_DATA);
+    // データ構造が壊れていたらデフォルトで補修
+    appData = repairData(appData);
+  } catch(e) {
+    console.warn('データ読み込みエラー、デフォルトに戻します:', e);
+    appData = clone(DEFAULT_DATA);
+  }
   renderAll();
+}
+
+// データ構造の欠損を検出して補修する
+function repairData(data) {
+  if (!data || typeof data !== 'object') return clone(DEFAULT_DATA);
+  if (!data.schedules) data.schedules = clone(DEFAULT_DATA.schedules);
+  if (!data.checklists) data.checklists = clone(DEFAULT_DATA.checklists);
+  // 各dayが配列かチェック
+  ['day1','day2','day3','day4','day5'].forEach(d => {
+    if (!Array.isArray(data.schedules[d])) data.schedules[d] = clone(DEFAULT_DATA.schedules[d]);
+  });
+  // チェックリストの各リストがitemsを持っているかチェック
+  ['pretravel','onsite'].forEach(lid => {
+    if (!data.checklists[lid]) data.checklists[lid] = clone(DEFAULT_DATA.checklists[lid]);
+    if (!Array.isArray(data.checklists[lid].items)) data.checklists[lid].items = clone(DEFAULT_DATA.checklists[lid].items);
+  });
+  data.initialized = true;
+  return data;
+}
+
+function resetToDefault() {
+  if (!confirm('スケジュールとチェックリストをすべてデフォルトに戻します。この操作は元に戻せません。よろしいですか？')) return;
+  appData = clone(DEFAULT_DATA);
+  saveData();
+  renderAll();
+  showSync('🔄 デフォルトデータに戻しました');
 }
 function saveData(){
   if(USE_FIREBASE&&fbDb){
@@ -785,29 +818,49 @@ function delItem(dayId,itemId){
 // ============================================================
 function renderChecklists(){
   const container=document.getElementById('clContainer');
-  if(!container||!appData||!appData.checklists)return;
+  if(!container) return;
+
+  // データ欠損チェック → 自動補修
+  if(!appData || !appData.checklists) {
+    appData = repairData(appData);
+  }
+
   container.innerHTML='';
-  Object.entries(appData.checklists).forEach(([lid,list])=>{
-    const items=list.items||[];
-    const done=items.filter(i=>i.checked).length;
-    const pct=items.length?Math.round(done/items.length*100):0;
-    const rows=items.map(item=>`
-      <div class="cl-row${item.checked?' done':''}" id="clr-${item.id}">
-        <input type="checkbox" id="chk-${item.id}" ${item.checked?'checked':''} onchange="toggleCheck('${lid}','${item.id}',this.checked)">
-        <label for="chk-${item.id}">${esc(item.text)}</label>
-        <button class="cl-del" onclick="delCheck('${lid}','${item.id}')" title="削除">✕</button>
-      </div>`).join('');
-    container.innerHTML+=`
-      <div class="cl-card">
-        <div class="cl-head"><div class="cl-title">${esc(list.title)}</div><div class="cl-count">${done} / ${items.length} 完了</div></div>
-        <div class="cl-bar"><div class="cl-fill" style="width:${pct}%"></div></div>
-        <div class="cl-items">${rows}</div>
-        <div class="cl-add">
-          <input placeholder="新しい項目を追加..." id="cli-${lid}" onkeydown="if(event.key==='Enter')addCheck('${lid}')">
-          <button onclick="addCheck('${lid}')">追加</button>
-        </div>
-      </div>`;
-  });
+  try {
+    Object.entries(appData.checklists).forEach(([lid,list])=>{
+      const items=list.items||[];
+      const done=items.filter(i=>i.checked).length;
+      const pct=items.length?Math.round(done/items.length*100):0;
+      const rows=items.map(item=>`
+        <div class="cl-row${item.checked?' done':''}" id="clr-${item.id}">
+          <input type="checkbox" id="chk-${item.id}" ${item.checked?'checked':''} onchange="toggleCheck('${lid}','${item.id}',this.checked)">
+          <label for="chk-${item.id}">${esc(item.text)}</label>
+          <button class="cl-del" onclick="delCheck('${lid}','${item.id}')" title="削除">✕</button>
+        </div>`).join('');
+      container.innerHTML+=`
+        <div class="cl-card">
+          <div class="cl-head"><div class="cl-title">${esc(list.title)}</div><div class="cl-count">${done} / ${items.length} 完了</div></div>
+          <div class="cl-bar"><div class="cl-fill" style="width:${pct}%"></div></div>
+          <div class="cl-items">${rows}</div>
+          <div class="cl-add">
+            <input placeholder="新しい項目を追加..." id="cli-${lid}" onkeydown="if(event.key==='Enter')addCheck('${lid}')">
+            <button onclick="addCheck('${lid}')">追加</button>
+          </div>
+        </div>`;
+    });
+  } catch(e) {
+    console.error('チェックリスト描画エラー:', e);
+    container.innerHTML = `<div style="background:var(--coral-light);border:0.5px solid var(--coral);border-radius:var(--radius-sm);padding:14px 16px;font-size:13px;color:var(--coral);">
+      ⚠️ データの読み込みに問題が発生しました。<br>
+      <button onclick="resetToDefault()" style="margin-top:10px;background:var(--coral);color:white;border:none;border-radius:6px;padding:7px 14px;font-size:12px;cursor:pointer;font-weight:600;">デフォルトデータに戻す</button>
+    </div>`;
+    return;
+  }
+
+  // リセットボタンを末尾に追加
+  container.innerHTML += `<div style="text-align:right;margin-top:8px;">
+    <button onclick="resetToDefault()" style="background:none;border:0.5px solid var(--border);border-radius:6px;padding:4px 12px;font-size:11px;color:var(--ink-faint);cursor:pointer;">🔄 デフォルトに戻す</button>
+  </div>`;
 }
 function toggleCheck(lid,itemId,checked){const item=appData.checklists[lid].items.find(i=>i.id===itemId);if(item){item.checked=checked;saveData();renderChecklists();}}
 function addCheck(lid){const input=document.getElementById('cli-'+lid);const text=input.value.trim();if(!text)return;appData.checklists[lid].items.push({id:'c'+Date.now(),text,checked:false});input.value='';saveData();renderChecklists();}
@@ -905,7 +958,6 @@ async function fetchRates() {
   fxRates.SGD_CNY = 5.38;
   fxRates.SGD_JPY = 110.5;
   calcFx();
-}
 }
 
 function calcFx() {
