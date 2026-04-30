@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>シンガポール家族旅行 2026年5月 ― 浅野家</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Outfit:wght@300;400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
@@ -19,13 +19,13 @@
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
-body{font-family:'Noto Sans JP',sans-serif;background:var(--cream);color:var(--ink);font-size:15px;line-height:1.7;min-height:100vh;}
+body{font-family:'BIZ UDPGothic',sans-serif;background:var(--cream);color:var(--ink);font-size:15px;line-height:1.7;min-height:100vh;}
 
 /* HERO */
 .hero{background:var(--ink);color:var(--warm-white);padding:56px 24px 44px;text-align:center;position:relative;overflow:hidden;}
 .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 60%,rgba(42,123,111,.35) 0%,transparent 60%),radial-gradient(ellipse at 75% 30%,rgba(201,151,58,.2) 0%,transparent 55%);pointer-events:none;}
-.hero-eyebrow{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:18px;}
-.hero h1{font-family:'Playfair Display',serif;font-size:clamp(28px,7vw,48px);font-weight:600;line-height:1.15;margin-bottom:8px;position:relative;}
+.hero-eyebrow{font-family:'Fira Code',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:18px;}
+.hero h1{font-family:'Outfit',sans-serif;font-size:clamp(28px,7vw,48px);font-weight:600;line-height:1.15;margin-bottom:8px;position:relative;}
 .hero-sub{font-size:14px;color:rgba(255,255,255,.6);margin-bottom:28px;letter-spacing:.04em;}
 .hero-pills{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;position:relative;}
 .hero-pill{background:rgba(255,255,255,.1);border:0.5px solid rgba(255,255,255,.2);border-radius:20px;padding:5px 14px;font-size:12px;color:rgba(255,255,255,.85);}
@@ -34,12 +34,12 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--cream);color:var(--i
 /* LAYOUT */
 .container{max-width:720px;margin:0 auto;padding:0 20px;}
 section{margin:36px 0;}
-.section-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:14px;padding-bottom:10px;border-bottom:0.5px solid var(--border);}
+.section-label{font-family:'Fira Code',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:14px;padding-bottom:10px;border-bottom:0.5px solid var(--border);}
 
 /* SETUP BANNER */
 .setup-banner{background:#FFF8E7;border:0.5px solid #E8C840;border-radius:var(--radius-sm);padding:13px 16px;margin-bottom:12px;font-size:12px;color:#6B4F00;display:none;line-height:1.6;}
 .setup-banner.show{display:block;}
-.setup-banner code{background:rgba(0,0,0,.08);padding:1px 5px;border-radius:3px;font-family:'DM Mono',monospace;font-size:11px;}
+.setup-banner code{background:rgba(0,0,0,.08);padding:1px 5px;border-radius:3px;font-family:'Fira Code',monospace;font-size:11px;}
 
 /* SETUP GUIDE */
 .setup-guide{background:white;border:0.5px solid var(--border);border-radius:var(--radius);margin-bottom:20px;overflow:hidden;}
@@ -58,7 +58,7 @@ section{margin:36px 0;}
 .sg-content{flex:1;}
 .sg-content strong{font-size:13px;color:var(--ink);display:block;margin-bottom:3px;}
 .sg-content p{font-size:12px;color:var(--ink-mid);line-height:1.6;}
-.sg-code{background:#F3F1EE;border:0.5px solid var(--border);border-radius:6px;padding:10px 12px;margin-top:6px;font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-mid);line-height:1.8;white-space:pre-wrap;word-break:break-all;}
+.sg-code{background:#F3F1EE;border:0.5px solid var(--border);border-radius:6px;padding:10px 12px;margin-top:6px;font-family:'Fira Code',monospace;font-size:11px;color:var(--ink-mid);line-height:1.8;white-space:pre-wrap;word-break:break-all;}
 .sg-tip{background:var(--gold-light);border:0.5px solid #D4B060;border-radius:6px;padding:9px 12px;margin-top:8px;font-size:12px;color:#7A5800;line-height:1.5;}
 
 /* SYNC STATUS */
@@ -69,9 +69,9 @@ section{margin:36px 0;}
 .flight-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .flight-card{background:var(--warm-white);border:0.5px solid var(--border);border-radius:var(--radius);padding:16px 18px;}
 .flight-dir{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-faint);margin-bottom:6px;}
-.flight-route{font-family:'Playfair Display',serif;font-size:20px;color:var(--ink);margin-bottom:4px;}
+.flight-route{font-family:'Outfit',sans-serif;font-size:20px;color:var(--ink);margin-bottom:4px;}
 .flight-info{font-size:12px;color:var(--ink-mid);line-height:1.6;}
-.flight-num{font-family:'DM Mono',monospace;font-size:11px;color:var(--gold);font-weight:500;margin-top:6px;}
+.flight-num{font-family:'Fira Code',monospace;font-size:11px;color:var(--gold);font-weight:500;margin-top:6px;}
 
 /* HOTEL */
 .hotel-card{background:var(--warm-white);border:0.5px solid var(--border);border-radius:var(--radius);padding:18px 20px;display:flex;gap:16px;align-items:flex-start;}
@@ -97,7 +97,7 @@ section{margin:36px 0;}
 /* WEATHER */
 .wx-cards{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:8px;}
 .wx-card{background:var(--warm-white);border:0.5px solid var(--border);border-radius:var(--radius-sm);padding:12px 8px;text-align:center;}
-.wx-day{font-size:9.5px;font-family:'DM Mono',monospace;color:var(--ink-faint);margin-bottom:6px;line-height:1.3;}
+.wx-day{font-size:9.5px;font-family:'Fira Code',monospace;color:var(--ink-faint);margin-bottom:6px;line-height:1.3;}
 .wx-icon{font-size:26px;margin-bottom:4px;line-height:1;}
 .wx-name{font-size:11px;color:var(--ink-mid);margin-bottom:6px;line-height:1.3;}
 .wx-temp{font-size:13px;font-weight:700;margin-bottom:7px;}
@@ -106,7 +106,7 @@ section{margin:36px 0;}
 .wx-lo{color:var(--day1);}
 .wx-rain-bar{height:3px;background:var(--border);border-radius:2px;margin-bottom:4px;}
 .wx-rain-fill{height:100%;border-radius:2px;transition:width .6s;}
-.wx-rain-pct{font-size:10px;font-family:'DM Mono',monospace;}
+.wx-rain-pct{font-size:10px;font-family:'Fira Code',monospace;}
 .wx-footer{display:flex;align-items:center;justify-content:space-between;margin-top:8px;}
 .wx-updated{font-size:10px;color:var(--ink-faint);}
 .wx-refresh-btn{background:none;border:0.5px solid var(--border);border-radius:6px;padding:3px 9px;font-size:11px;color:var(--ink-light);cursor:pointer;}
@@ -120,7 +120,7 @@ section{margin:36px 0;}
 .spot-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;}
 .spot-card{background:var(--warm-white);border:0.5px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px;text-decoration:none;color:inherit;display:block;transition:box-shadow .15s,border-color .15s;}
 .spot-card:hover{border-color:var(--gold);box-shadow:0 2px 12px rgba(0,0,0,.07);}
-.spot-day{font-size:10px;font-family:'DM Mono',monospace;color:var(--ink-faint);margin-bottom:4px;}
+.spot-day{font-size:10px;font-family:'Fira Code',monospace;color:var(--ink-faint);margin-bottom:4px;}
 .spot-name{font-size:13px;font-weight:500;color:var(--ink);}
 .spot-note{font-size:11px;color:var(--ink-light);margin-top:3px;line-height:1.5;}
 .spot-maps{font-size:11px;color:var(--teal);margin-top:6px;font-weight:500;}
@@ -129,7 +129,7 @@ section{margin:36px 0;}
 .day-card{background:var(--warm-white);border:0.5px solid var(--border);border-radius:var(--radius);margin-bottom:12px;overflow:hidden;}
 .day-header{padding:14px 20px;display:flex;align-items:center;gap:12px;cursor:pointer;user-select:none;}
 .day-header:hover{background:#F5F1EC;}
-.day-num{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:15px;font-weight:600;flex-shrink:0;}
+.day-num{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Outfit',sans-serif;font-size:15px;font-weight:600;flex-shrink:0;}
 .day-title{flex:1;}
 .day-title h2{font-size:14px;font-weight:700;color:var(--ink);}
 .day-title p{font-size:12px;color:var(--ink-light);margin-top:1px;}
@@ -146,7 +146,7 @@ section{margin:36px 0;}
 .ti{display:flex;gap:12px;}
 .ti:last-child .tl-ln{display:none;}
 .tl-l{display:flex;flex-direction:column;align-items:center;width:48px;flex-shrink:0;}
-.tl-t{font-family:'DM Mono',monospace;font-size:10px;color:var(--ink-faint);white-space:nowrap;padding-top:2px;}
+.tl-t{font-family:'Fira Code',monospace;font-size:10px;color:var(--ink-faint);white-space:nowrap;padding-top:2px;}
 .tl-d{width:8px;height:8px;border-radius:50%;margin-top:5px;flex-shrink:0;}
 .tl-ln{width:1px;background:var(--border);flex:1;margin-top:3px;min-height:24px;}
 .tc{padding-bottom:18px;flex:1;min-width:0;}
@@ -157,7 +157,7 @@ section{margin:36px 0;}
 .day-body.editing .ti-del{display:block;}
 .add-form{display:none;background:var(--cream);border:0.5px dashed var(--border);border-radius:var(--radius-sm);padding:14px;margin-top:10px;flex-direction:column;gap:8px;}
 .day-body.editing .add-form{display:flex;}
-.add-form label{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-faint);font-family:'DM Mono',monospace;margin-bottom:-4px;}
+.add-form label{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-faint);font-family:'Fira Code',monospace;margin-bottom:-4px;}
 .add-form input,.add-form select{border:0.5px solid var(--border);border-radius:6px;padding:7px 10px;font-size:12px;font-family:inherit;background:white;color:var(--ink);}
 .add-form input:focus,.add-form select:focus{outline:none;border-color:var(--gold);}
 .add-form .frow{display:flex;gap:8px;}
@@ -171,7 +171,7 @@ section{margin:36px 0;}
 .cl-card{background:var(--warm-white);border:0.5px solid var(--border);border-radius:var(--radius);overflow:hidden;}
 .cl-head{padding:10px 16px;display:flex;align-items:center;justify-content:space-between;}
 .cl-title{font-size:13px;font-weight:700;color:var(--ink);}
-.cl-count{font-size:11px;color:var(--ink-faint);font-family:'DM Mono',monospace;}
+.cl-count{font-size:11px;color:var(--ink-faint);font-family:'Fira Code',monospace;}
 .cl-bar{height:3px;background:var(--border);margin:0 16px 1px;}
 .cl-fill{height:100%;background:var(--teal);transition:width .3s;border-radius:2px;}
 .cl-row{display:flex;align-items:center;gap:10px;padding:8px 16px;border-bottom:0.5px solid rgba(0,0,0,.04);transition:background .1s;}
@@ -193,17 +193,17 @@ section{margin:36px 0;}
 .fx-card{background:var(--warm-white);border:0.5px solid var(--border);border-radius:var(--radius);padding:20px 22px;}
 .fx-input-row{display:flex;gap:10px;align-items:center;margin-bottom:14px;}
 .fx-input-wrap{position:relative;flex:1;}
-.fx-input-wrap span{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-family:'DM Mono',monospace;font-size:14px;font-weight:600;color:var(--gold);}
-.fx-input{width:100%;padding:10px 12px 10px 32px;border:0.5px solid var(--border);border-radius:var(--radius-sm);font-size:18px;font-family:'DM Mono',monospace;font-weight:500;color:var(--ink);background:var(--cream);}
+.fx-input-wrap span{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-family:'Fira Code',monospace;font-size:14px;font-weight:600;color:var(--gold);}
+.fx-input{width:100%;padding:10px 12px 10px 32px;border:0.5px solid var(--border);border-radius:var(--radius-sm);font-size:18px;font-family:'Fira Code',monospace;font-weight:500;color:var(--ink);background:var(--cream);}
 .fx-input:focus{outline:none;border-color:var(--gold);background:white;}
 .fx-results{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .fx-result{background:var(--cream);border:0.5px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;text-align:center;}
-.fx-result-label{font-size:10px;font-family:'DM Mono',monospace;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;}
+.fx-result-label{font-size:10px;font-family:'Fira Code',monospace;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;}
 .fx-result-flag{font-size:22px;margin-bottom:4px;}
-.fx-result-amount{font-size:22px;font-weight:700;font-family:'DM Mono',monospace;color:var(--ink);line-height:1.2;}
+.fx-result-amount{font-size:22px;font-weight:700;font-family:'Fira Code',monospace;color:var(--ink);line-height:1.2;}
 .fx-result-currency{font-size:11px;color:var(--ink-light);margin-top:3px;}
 .fx-rate-row{display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:10px;border-top:0.5px solid var(--border);}
-.fx-rates{font-size:11px;color:var(--ink-faint);font-family:'DM Mono',monospace;display:flex;gap:14px;}
+.fx-rates{font-size:11px;color:var(--ink-faint);font-family:'Fira Code',monospace;display:flex;gap:14px;}
 .fx-refresh{background:none;border:0.5px solid var(--border);border-radius:6px;padding:3px 10px;font-size:11px;color:var(--ink-light);cursor:pointer;}
 .fx-refresh:hover{border-color:var(--teal);color:var(--teal);}
 .fx-loading-msg{text-align:center;font-size:12px;color:var(--ink-faint);padding:10px;}
@@ -212,7 +212,7 @@ section{margin:36px 0;}
 .spot-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;}
 .spot-card{background:var(--warm-white);border:0.5px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px;text-decoration:none;color:inherit;display:block;transition:box-shadow .15s,border-color .15s;}
 .spot-card:hover{border-color:var(--gold);box-shadow:0 2px 12px rgba(0,0,0,.07);}
-.spot-day{font-size:10px;font-family:'DM Mono',monospace;color:var(--ink-faint);margin-bottom:4px;}
+.spot-day{font-size:10px;font-family:'Fira Code',monospace;color:var(--ink-faint);margin-bottom:4px;}
 .spot-name{font-size:13px;font-weight:500;color:var(--ink);}
 .spot-note{font-size:11px;color:var(--ink-light);margin-top:3px;line-height:1.5;}
 .spot-maps{font-size:11px;color:var(--teal);margin-top:6px;font-weight:500;}
@@ -228,7 +228,7 @@ section{margin:36px 0;}
 /* NAV */
 .sticky-nav{position:sticky;top:0;background:rgba(26,24,20,.95);backdrop-filter:blur(8px);z-index:100;padding:10px 20px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;border-bottom:0.5px solid rgba(255,255,255,.08);}
 .sticky-nav::-webkit-scrollbar{display:none;}
-.nav-btn{flex-shrink:0;background:rgba(255,255,255,.07);border:0.5px solid rgba(255,255,255,.12);border-radius:20px;padding:5px 13px;font-size:11.5px;color:rgba(255,255,255,.7);text-decoration:none;font-family:'Noto Sans JP',sans-serif;transition:background .15s;white-space:nowrap;}
+.nav-btn{flex-shrink:0;background:rgba(255,255,255,.07);border:0.5px solid rgba(255,255,255,.12);border-radius:20px;padding:5px 13px;font-size:11.5px;color:rgba(255,255,255,.7);text-decoration:none;font-family:'BIZ UDPGothic',sans-serif;transition:background .15s;white-space:nowrap;}
 .nav-btn:hover{background:rgba(201,151,58,.3);color:#F5D98B;}
 
 footer{background:var(--ink);color:rgba(255,255,255,.5);text-align:center;padding:28px 20px;font-size:12px;line-height:1.8;margin-top:40px;}
@@ -347,7 +347,7 @@ footer span{color:var(--gold);}
         <div class="hotel-detail">
           📍 30 Beach Road, Singapore<br>
           チェックイン: 5月3日（日）15:00 / チェックアウト: 5月7日（木）<strong style="color:var(--teal);">16:00</strong>（Platinum特典）<br>
-          1 King Bed · Premier Guest Room · 4泊 · S$2,411.20 · 確認番号: <span style="font-family:'DM Mono',monospace;">#93479246</span>
+          1 King Bed · Premier Guest Room · 4泊 · S$2,411.20 · 確認番号: <span style="font-family:'Fira Code',monospace;">#93479246</span>
         </div>
         <div style="margin-top:8px;"><a href="https://maps.google.com/?cid=10696474480720568431" target="_blank" style="font-size:12px;color:var(--teal);text-decoration:none;font-weight:500;">📍 Googleマップで見る →</a></div>
       </div>
@@ -514,7 +514,7 @@ footer span{color:var(--gold);}
 </div>
 
 <footer>
-  <div style="margin-bottom:8px;font-family:'Playfair Display',serif;font-size:16px;color:rgba(255,255,255,.7);font-style:italic;">Have a wonderful trip ✈</div>
+  <div style="margin-bottom:8px;font-family:'Outfit',sans-serif;font-size:16px;color:rgba(255,255,255,.7);font-style:italic;">Have a wonderful trip ✈</div>
   浅野家 シンガポール旅行 · 2026年5月3〜7日<br>
   作成日: <span>2026年4月18日</span> · JW Marriott <span>#93479246</span> · SQ827 / SQ826 <span>DYPF2I</span>
 </footer>
@@ -898,7 +898,7 @@ function toggleGuide(toggle){const body=toggle.nextElementSibling;const isOpen=b
   ];
   spots.forEach(s=>{
     const m=L.marker([s.lat,s.lng],{icon:mkIcon(s.c,s.e)}).addTo(map);
-    m.bindPopup(`<div style="font-family:'Noto Sans JP',sans-serif;min-width:185px;">
+    m.bindPopup(`<div style="font-family:'BIZ UDPGothic',sans-serif;min-width:185px;">
       <div style="font-size:10px;color:#999;margin-bottom:3px;font-family:monospace;text-transform:uppercase;">${s.day}</div>
       <div style="font-size:13px;font-weight:700;color:#1A1814;margin-bottom:4px;">${s.name}</div>
       <div style="font-size:11.5px;color:#6B6560;margin-bottom:9px;line-height:1.5;">${s.sub}</div>
