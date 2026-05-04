@@ -263,6 +263,26 @@ footer span{color:var(--gold);}
   .file-actions{margin-top:4px;}
   .wx-cards{grid-template-columns:1fr 1fr;}
 }
+
+/* ===== DAY MEMO ===== */
+.day-memo-wrap{margin-top:18px;border-top:1px dashed var(--border);padding-top:14px;}
+.day-memo-label{font-size:10px;font-family:'Fira Code',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.day-memo-label::before{content:'📝';font-size:12px;}
+.day-memo-display{background:#FDFBF7;border:1px solid var(--border);border-radius:var(--radius-sm);padding:11px 13px;font-size:12.5px;color:var(--ink-mid);line-height:1.7;min-height:46px;cursor:pointer;transition:border-color .15s;white-space:pre-wrap;word-break:break-word;}
+.day-memo-display:hover{border-color:var(--gold);}
+.day-memo-display.empty{color:var(--ink-faint);font-style:italic;}
+.day-memo-display.empty::after{content:'タップしてメモを追加...';}
+.day-memo-editor{display:none;flex-direction:column;gap:8px;}
+.day-memo-editor.active{display:flex;}
+.day-memo-editor.active+.day-memo-display{display:none;}
+.day-memo-ta{width:100%;min-height:80px;background:#FDFBF7;border:1.5px solid var(--gold);border-radius:var(--radius-sm);padding:11px 13px;font-size:12.5px;font-family:'BIZ UDPGothic',sans-serif;color:var(--ink);line-height:1.7;resize:vertical;outline:none;box-shadow:0 0 0 3px rgba(201,151,58,.1);}
+.day-memo-actions{display:flex;gap:8px;justify-content:flex-end;align-items:center;}
+.memo-btn{padding:5px 14px;border-radius:20px;font-size:12px;font-family:'BIZ UDPGothic',sans-serif;cursor:pointer;border:none;font-weight:500;transition:opacity .15s;}
+.memo-btn:hover{opacity:.8;}
+.memo-btn-save{background:var(--gold);color:#fff;}
+.memo-btn-cancel{background:#EEE8E0;color:var(--ink-mid);}
+.memo-saving{font-size:11px;color:var(--teal);display:none;margin-right:auto;}
+.memo-saving.show{display:block;}
 </style>
 </head>
 <body>
@@ -444,7 +464,7 @@ footer span{color:var(--gold);}
     <div class="day-card" id="day2">
       <div class="day-header" onclick="tog(this)">
         <div class="day-num" style="background:var(--day2-l);color:var(--day2);">2</div>
-        <div class="day-title"><h2>Day 2 · 5月4日（月） — MBS特典 &amp; ガーデンズ</h2><p>Sands Lifestyle Prestige取得 → スカイパーク無料 → ガーデンズ → 光のショー</p></div>
+        <div class="day-title"><h2>Day 2 · 5月4日（月） — 午前休養 → MBS特典 &amp; ガーデンズ</h2><p>🛏️ 午前ホテル休養 → 午後Sands Prestige取得 → スカイパーク → ガーデンズ → 光のショー</p></div>
         <button class="edit-btn" onclick="toggleEdit(event,'day2')">✏ 編集</button>
         <span class="day-chev">▼</span>
       </div>
@@ -453,7 +473,7 @@ footer span{color:var(--gold);}
     <div class="day-card" id="day3">
       <div class="day-header" onclick="tog(this)">
         <div class="day-num" style="background:var(--day3-l);color:var(--day3);">3</div>
-        <div class="day-title"><h2>Day 3 · 5月5日（火） — ユニバーサル・スタジオ</h2><p>セントーサ島でテーマパーク終日 → 夕方クラーク・キーでディナー</p></div>
+        <div class="day-title"><h2>Day 3 · 5月5日（火） — ユニバーサル・スタジオ &amp; ナイトサファリ</h2><p>USS（10:00〜15:30）→ ホテル休憩 → クラーク・キー早めの夕食 → 🦉 ナイトサファリ（19:30〜）</p></div>
         <button class="edit-btn" onclick="toggleEdit(event,'day3')">✏ 編集</button>
         <span class="day-chev">▼</span>
       </div>
@@ -462,7 +482,7 @@ footer span{color:var(--gold);}
     <div class="day-card" id="day4">
       <div class="day-header" onclick="tog(this)">
         <div class="day-num" style="background:var(--day4-l);color:var(--day4);">4</div>
-        <div class="day-title"><h2>Day 4 · 5月6日（水） — 動物園 &amp; チャイナタウン</h2><p>朝の動物園（Jungle Breakfast） → 午後チャイナタウンでお土産 → フードストリートで夕食</p></div>
+        <div class="day-title"><h2>Day 4 · 5月6日（水） — チャイナタウン &amp; Joo Chiat / Katong</h2><p>Maxwell FC → 仏牙寺 → Song Fa → Koon Seng Rd → Katong Laksa → マスピーと夕食</p></div>
         <button class="edit-btn" onclick="toggleEdit(event,'day4')">✏ 編集</button>
         <span class="day-chev">▼</span>
       </div>
@@ -814,6 +834,7 @@ function renderDay(dayId){
   body.innerHTML=html;
   if(wasEditing)body.classList.add('editing');
   if(wasOpen)body.classList.add('open');
+  renderDayMemo(dayId,body);
 }
 function addItem(dayId){
   const time=document.getElementById('af-time-'+dayId).value.trim();
@@ -1010,6 +1031,89 @@ if ('serviceWorker' in navigator) {
       .then(reg => console.log('SW registered:', reg.scope))
       .catch(err => console.log('SW error:', err));
   });
+}
+</script>
+<script>
+// ===== DAY MEMO FEATURE =====
+function renderDayMemo(dayKey, bodyEl) {
+  if (!bodyEl || bodyEl.querySelector('.day-memo-wrap')) return;
+  const wrap = document.createElement('div');
+  wrap.className = 'day-memo-wrap';
+  wrap.innerHTML = `
+    <div class="day-memo-label">メモ</div>
+    <div class="day-memo-editor" id="memo-editor-${dayKey}">
+      <textarea class="day-memo-ta" id="memo-ta-${dayKey}" placeholder="この日のメモを入力..."></textarea>
+      <div class="day-memo-actions">
+        <span class="memo-saving" id="memo-saving-${dayKey}">保存中...</span>
+        <button class="memo-btn memo-btn-cancel" onclick="closeMemo('${dayKey}')">キャンセル</button>
+        <button class="memo-btn memo-btn-save" onclick="saveMemo('${dayKey}')">💾 保存</button>
+      </div>
+    </div>
+    <div class="day-memo-display empty" id="memo-disp-${dayKey}" onclick="openMemo('${dayKey}')"></div>
+  `;
+  bodyEl.appendChild(wrap);
+  loadMemo(dayKey);
+}
+
+function loadMemo(dayKey) {
+  const disp = document.getElementById('memo-disp-' + dayKey);
+  if (!disp) return;
+  const ref = (typeof fbDb !== 'undefined' && fbDb) ? fbDb.ref(DB_PATH + '/dayNotes/' + dayKey) : null;
+  if (ref) {
+    ref.once('value').then(snap => {
+      const t = snap.val() || '';
+      if (t) { disp.textContent = t; disp.classList.remove('empty'); }
+      else   { disp.textContent = ''; disp.classList.add('empty'); }
+    });
+  } else {
+    try {
+      const notes = JSON.parse(localStorage.getItem(DB_PATH + '_notes') || '{}');
+      const t = notes[dayKey] || '';
+      if (t) { disp.textContent = t; disp.classList.remove('empty'); }
+      else   { disp.textContent = ''; disp.classList.add('empty'); }
+    } catch(e) {}
+  }
+}
+
+function openMemo(dayKey) {
+  const disp = document.getElementById('memo-disp-' + dayKey);
+  const editor = document.getElementById('memo-editor-' + dayKey);
+  const ta = document.getElementById('memo-ta-' + dayKey);
+  if (!editor || !ta) return;
+  ta.value = disp.classList.contains('empty') ? '' : disp.textContent;
+  editor.classList.add('active');
+  ta.focus();
+}
+
+function closeMemo(dayKey) {
+  const editor = document.getElementById('memo-editor-' + dayKey);
+  if (editor) editor.classList.remove('active');
+}
+
+function saveMemo(dayKey) {
+  const ta = document.getElementById('memo-ta-' + dayKey);
+  const disp = document.getElementById('memo-disp-' + dayKey);
+  const saving = document.getElementById('memo-saving-' + dayKey);
+  const editor = document.getElementById('memo-editor-' + dayKey);
+  const text = ta.value.trim();
+  const done = () => {
+    saving.classList.remove('show');
+    editor.classList.remove('active');
+    if (text) { disp.textContent = text; disp.classList.remove('empty'); }
+    else       { disp.textContent = ''; disp.classList.add('empty'); }
+  };
+  saving.classList.add('show');
+  const ref = (typeof fbDb !== 'undefined' && fbDb) ? fbDb.ref(DB_PATH + '/dayNotes/' + dayKey) : null;
+  if (ref) {
+    ref.set(text).then(done).catch(() => { saving.classList.remove('show'); alert('保存に失敗しました'); });
+  } else {
+    try {
+      const notes = JSON.parse(localStorage.getItem(DB_PATH + '_notes') || '{}');
+      notes[dayKey] = text;
+      localStorage.setItem(DB_PATH + '_notes', JSON.stringify(notes));
+    } catch(e) {}
+    setTimeout(done, 200);
+  }
 }
 </script>
 </body>
