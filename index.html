@@ -23,6 +23,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 <style>
 :root {
   --cream:#FAF7F2;--warm-white:#FFFDF9;--gold:#C9973A;--gold-light:#F5E6C8;
@@ -40,6 +41,20 @@ body{font-family:'BIZ UDPGothic',sans-serif;background:var(--cream);color:var(--
   padding-right:env(safe-area-inset-right);
   padding-bottom:env(safe-area-inset-bottom);
 }
+
+/* LOGIN OVERLAY */
+#loginOverlay{position:fixed;inset:0;background:var(--ink);z-index:9999;display:flex;align-items:center;justify-content:center;padding:24px;}
+.login-box{background:var(--warm-white);border-radius:16px;padding:36px 32px;width:100%;max-width:360px;text-align:center;box-shadow:0 8px 40px rgba(0,0,0,.35);}
+.login-logo{font-size:36px;margin-bottom:12px;}
+.login-title{font-family:'Outfit',sans-serif;font-size:22px;font-weight:600;color:var(--ink);margin-bottom:4px;}
+.login-sub{font-size:13px;color:var(--ink-light);margin-bottom:28px;}
+.login-field{width:100%;border:1px solid var(--border);border-radius:8px;padding:11px 14px;font-size:14px;font-family:inherit;margin-bottom:12px;outline:none;color:var(--ink);}
+.login-field:focus{border-color:var(--teal);}
+.login-btn{width:100%;background:var(--teal);color:white;border:none;border-radius:8px;padding:12px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;}
+.login-btn:hover{background:#1f6059;}
+.login-btn:disabled{opacity:.5;cursor:not-allowed;}
+.login-error{color:var(--coral);font-size:13px;margin-top:10px;min-height:18px;}
+.login-loading{color:var(--ink-faint);font-size:13px;margin-top:10px;}
 
 /* HERO */
 .hero{background:var(--ink);color:var(--warm-white);padding:56px 24px 44px;text-align:center;position:relative;overflow:hidden;}
@@ -286,6 +301,21 @@ footer span{color:var(--gold);}
 </style>
 </head>
 <body>
+
+<!-- LOGIN OVERLAY -->
+<div id="loginOverlay">
+  <div class="login-box">
+    <div class="login-logo">✈️</div>
+    <div class="login-title">浅野家 旅行プランナー</div>
+    <div class="login-sub">シンガポール 2026年5月</div>
+    <input class="login-field" type="email" id="loginEmail" placeholder="メールアドレス" autocomplete="email">
+    <input class="login-field" type="password" id="loginPassword" placeholder="パスワード" autocomplete="current-password">
+    <button class="login-btn" id="loginBtn" onclick="doLogin()">ログイン</button>
+    <div class="login-error" id="loginError"></div>
+  </div>
+</div>
+
+<div id="mainContent" style="display:none;">
 
 <div class="hero">
   <div class="hero-eyebrow">Family Travel Guide · 2026</div>
@@ -561,6 +591,8 @@ footer span{color:var(--gold);}
 
 <div class="sync-dot" id="syncDot"></div>
 
+</div><!-- /mainContent -->
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script>
 // ============================================================
@@ -735,18 +767,57 @@ function initStorage(){
   if(USE_FIREBASE){
     try{
       firebase.initializeApp(FIREBASE_CONFIG);
-      fbDb=firebase.database();
-      fbDb.ref(DB_PATH).on('value',snap=>{
-        const val=snap.val();
-        if(!val||!val.initialized){fbDb.ref(DB_PATH).set(clone(DEFAULT_DATA));}
-        else{appData=repairData(val);renderAll();showSync('🔄 同期完了');}
-      },err=>{console.warn('Firebase error:',err);loadLocal();});
+      firebase.auth().onAuthStateChanged(user => {
+        if(user){
+          document.getElementById('loginOverlay').style.display='none';
+          document.getElementById('mainContent').style.display='block';
+          fbDb=firebase.database();
+          fbDb.ref(DB_PATH).on('value',snap=>{
+            const val=snap.val();
+            if(!val||!val.initialized){fbDb.ref(DB_PATH).set(clone(DEFAULT_DATA));}
+            else{appData=repairData(val);renderAll();showSync('🔄 同期完了');}
+          },err=>{console.warn('Firebase error:',err);loadLocal();});
+        }else{
+          document.getElementById('loginOverlay').style.display='flex';
+          document.getElementById('mainContent').style.display='none';
+        }
+      });
     }catch(e){console.warn('Firebase init error:',e);loadLocal();}
   }else{
     document.getElementById('setupBanner').classList.add('show');
+    document.getElementById('loginOverlay').style.display='none';
+    document.getElementById('mainContent').style.display='block';
     loadLocal();
   }
 }
+
+function doLogin(){
+  const email=document.getElementById('loginEmail').value.trim();
+  const pw=document.getElementById('loginPassword').value;
+  const errEl=document.getElementById('loginError');
+  const btn=document.getElementById('loginBtn');
+  if(!email||!pw){errEl.textContent='メールとパスワードを入力してください';return;}
+  errEl.textContent='';
+  btn.disabled=true;btn.textContent='ログイン中...';
+  firebase.auth().signInWithEmailAndPassword(email,pw)
+    .then(()=>{btn.disabled=false;btn.textContent='ログイン';})
+    .catch(err=>{
+      btn.disabled=false;btn.textContent='ログイン';
+      if(err.code==='auth/invalid-credential'||err.code==='auth/wrong-password'||err.code==='auth/user-not-found'){
+        errEl.textContent='メールアドレスまたはパスワードが違います';
+      }else{
+        errEl.textContent='ログインに失敗しました：'+err.message;
+      }
+    });
+}
+
+// Enterキーでログイン
+document.addEventListener('DOMContentLoaded',()=>{
+  ['loginEmail','loginPassword'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el)el.addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+  });
+});
 function loadLocal(){
   try {
     const s = localStorage.getItem(DB_PATH);
